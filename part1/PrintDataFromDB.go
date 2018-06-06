@@ -23,22 +23,22 @@ func main(){
 	if(err != nil) {
 		log.Fatal(err)
 	}
+
 	rows, err := db.Query("Select sku,product_name,stocks from products ORDER BY sku DESC")
 	if err!= nil {
 		log.Print(err)
 	}
+
+	count:=0
 	for rows.Next(){
 		if err := rows.Scan(&products.Sku, &products.Product_name, &products.Stocks); err != nil {
 			log.Fatal(err.Error())
 
 		}else{
 			arr_products = append(arr_products, products)
+			fmt.Println(arr_products[count])
 		}
-	}
-
-	for i := 0; i < len(arr_products); i++ {
-
-		fmt.Println(arr_products[i])
+		count++
 	}
 
 
