@@ -17,7 +17,7 @@ type Products struct {
 func main(){
 	var products Products
 	var arr_products []Products
-	db, err := sql.Open("mysql","root:blink182@tcp(127.0.0.1:3306)/tokoijah")
+	db, err := sql.Open("mysql","root:@tcp(127.0.0.1:3306)/tokoijah")
 	defer db.Close()
 
 	if(err != nil) {
