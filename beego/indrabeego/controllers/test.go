@@ -25,7 +25,13 @@ type Products struct {
 	Stocks int
 }
 
-func (c *ProductController) Get(){
+type ResponseProduct struct {
+	Status int `json:"status"`
+	Message string `json:"message"`
+	Data []orm.Params
+}
+
+func (this *ProductController) Get(){
 	o := orm.NewOrm()
 
 	var maps []orm.Params
@@ -33,6 +39,14 @@ func (c *ProductController) Get(){
 	if err == nil && num > 0 {
 		fmt.Println(maps[0]["product_name"])
 	}
+
+	var resProduct ResponseProduct
+	resProduct.Status = 1
+	resProduct.Message = "Success"
+	resProduct.Data = maps
+
+	this.Data["json"] = resProduct
+	this.ServeJSON()
 
 
 
