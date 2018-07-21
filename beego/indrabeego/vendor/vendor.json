@@ -67,10 +67,22 @@
 			"revisionTime": "2018-07-08T08:11:35Z"
 		},
 		{
+			"checksumSHA1": "mUeojTdLEyzYOki70VUAeeYr/wQ=",
+			"path": "github.com/dgrijalva/jwt-go",
+			"revision": "0b96aaa707760d6ab28d9b9d1913ff5993328bae",
+			"revisionTime": "2018-07-19T21:18:23Z"
+		},
+		{
 			"checksumSHA1": "W+IoIME5mgWjwU+dOlh3DZEZEN4=",
 			"path": "github.com/go-sql-driver/mysql",
 			"revision": "749ddf1598b47e3cd909414bda735fe790ef3d30",
 			"revisionTime": "2018-06-18T11:59:01Z"
+		},
+		{
+			"checksumSHA1": "wbkvNFx8Mzi2aKy/VtV8byjGX3w=",
+			"path": "github.com/juusechec/jwt-beego",
+			"revision": "c8c7c4585066bc2e74e5988794f6771629169098",
+			"revisionTime": "2018-02-06T20:04:54Z"
 		},
 		{
 			"checksumSHA1": "LiyXfqOzaeQ8vgYZH3t2hUEdVTw=",

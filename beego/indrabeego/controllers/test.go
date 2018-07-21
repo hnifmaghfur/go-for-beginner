@@ -14,16 +14,11 @@ type ProductController struct {
 	beego.Controller
 }
 
-func (c *TestController) Get() {
+func (this *TestController) Get() {
 
-	c.Ctx.Output.Body([]byte(" test hello world"))
+	this.Ctx.Output.Body([]byte(" test hello world"))
 }
 
-type Products struct {
-	Sku string
-	Product_name string
-	Stocks int
-}
 
 type ResponseProduct struct {
 	Status int `json:"status"`
