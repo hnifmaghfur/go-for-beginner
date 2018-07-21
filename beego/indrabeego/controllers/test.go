@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"fmt"
+	jwt "github.com/juusechec/jwt-beego"
 )
 
 type TestController struct {
@@ -27,18 +28,33 @@ type ResponseProduct struct {
 }
 
 func (this *ProductController) Get(){
-	o := orm.NewOrm()
-
-	var maps []orm.Params
-	num, err := o.Raw("SELECT sku, product_name,stocks FROM products WHERE sku = ?", "ffffff-ccc-ikik").Values(&maps)
-	if err == nil && num > 0 {
-		fmt.Println(maps[0]["product_name"])
-	}
 
 	var resProduct ResponseProduct
-	resProduct.Status = 1
-	resProduct.Message = "Success"
-	resProduct.Data = maps
+	var maps []orm.Params
+	libJWT := jwt. EasyToken {}
+
+	tokenstring := this.Ctx.Request.Header.Get("tokenstring")
+
+	valid , _ , _  := libJWT. ValidateToken (tokenstring)
+
+	if(valid == true) {
+
+		oRM := orm.NewOrm()
+		num, err := oRM.Raw("SELECT sku, product_name,stocks FROM products WHERE sku = ?", "ffffff-ccc-ikik").Values(&maps)
+		if err == nil && num > 0 {
+			fmt.Println(maps[0]["product_name"])
+		}
+
+
+		resProduct.Status = 1
+		resProduct.Message = "Success"
+		resProduct.Data = maps
+	}else{
+
+		resProduct.Status = 401
+		resProduct.Message = "Invalid Token"
+		resProduct.Data = maps
+	}
 
 	this.Data["json"] = resProduct
 	this.ServeJSON()
