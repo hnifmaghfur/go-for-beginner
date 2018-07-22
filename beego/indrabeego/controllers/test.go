@@ -24,7 +24,7 @@ func (this *TestController) Get() {
 type ResponseProduct struct {
 	Status int `json:"status"`
 	Message string `json:"message"`
-	Data []orm.Params
+	Data []orm.Params `json:"data"`
 }
 
 func (this *ProductController) Get(){

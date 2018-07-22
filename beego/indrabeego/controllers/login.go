@@ -8,6 +8,7 @@ import (
 	"fmt"
 	jwt "github.com/juusechec/jwt-beego"
 	"time"
+	"strconv"
 )
 
 type LoginController struct {
@@ -18,6 +19,7 @@ type ResponseLogin struct {
 	Status int `json:"status"`
 	Message string `json:"message"`
 	Tokenstring string `json:"tokenstring"`
+	Tokenexpired string `json:"tokenexpired"`
 }
 
 func (this *LoginController) Post(){
@@ -33,20 +35,24 @@ func (this *LoginController) Post(){
 	hasher.Write([]byte(password))
 	password_md5 := hex.EncodeToString(hasher.Sum(nil))
 
-	o := orm.NewOrm()
+	oRM := orm.NewOrm()
 	var maps []orm.Params
-	num, err := o.Raw("SELECT username, password,tokenstring FROM users WHERE username = ? AND password = ?", username,password_md5).Values(&maps)
+	num, err := oRM.Raw("SELECT username, password FROM users WHERE username = ? AND password = ?", username,password_md5).Values(&maps)
 
 
 	if err == nil && num > 0 {
 		resLogin.Status = 1
 		resLogin.Message = "Login Success"
 
+		expires_int64 := time. Now (). Unix () + 3600
+		expires := strconv.FormatInt(expires_int64,10)
 
 		libJwt := jwt.EasyToken{Username:username,
-			Expires: time. Now (). Unix () + 3600 ,}
+			Expires: expires_int64 ,}
 		tokenString, _ := libJwt. GetToken ()
+
 		resLogin.Tokenstring = tokenString
+		resLogin.Tokenexpired = expires
 	}else{
 		fmt.Println(err)
 		fmt.Println(num)
