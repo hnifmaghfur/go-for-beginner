@@ -27,7 +27,8 @@ func main() {
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/test", &controllers.TestController{})
 	beego.Router("/login",&controllers.LoginController{})
-	beego.Router("/products", &controllers.ProductController{})
+	beego.Router("/products", &controllers.ProductsController{})
+	beego.Router("/product/:sku", &controllers.ProductController{})
 	beego.Run()
 }
 

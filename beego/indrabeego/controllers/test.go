@@ -11,6 +11,10 @@ type TestController struct {
 	beego.Controller
 }
 
+type ProductsController struct {
+	beego.Controller
+}
+
 type ProductController struct {
 	beego.Controller
 }
@@ -27,7 +31,7 @@ type ResponseProduct struct {
 	Data []orm.Params `json:"data"`
 }
 
-func (this *ProductController) Get(){
+func (this *ProductsController) Get(){
 
 	var resProduct ResponseProduct
 	var maps []orm.Params
@@ -40,7 +44,7 @@ func (this *ProductController) Get(){
 	if(valid == true) {
 
 		oRM := orm.NewOrm()
-		num, err := oRM.Raw("SELECT sku, product_name,stocks FROM products WHERE sku = ?", "ffffff-ccc-ikik").Values(&maps)
+		num, err := oRM.Raw("SELECT sku, product_name,stocks FROM products").Values(&maps)
 		if err == nil && num > 0 {
 			fmt.Println(maps[0]["product_name"])
 		}
@@ -60,5 +64,38 @@ func (this *ProductController) Get(){
 	this.ServeJSON()
 
 
+
+}
+
+func (this *ProductController) Get(){
+
+	var resProduct ResponseProduct
+	var maps []orm.Params
+	libJWT := jwt. EasyToken {}
+
+	tokenstring := this.Ctx.Request.Header.Get("tokenstring")
+
+	valid , _ , _  := libJWT. ValidateToken (tokenstring)
+
+	if(valid == true) {
+		sku := this.Ctx.Input.Param(":sku")
+		oRM := orm.NewOrm()
+		num, err := oRM.Raw("SELECT sku, product_name,stocks FROM products WHERE sku=?",sku).Values(&maps)
+		if err == nil && num > 0 {
+			fmt.Println(maps[0]["product_name"])
+		}
+
+		resProduct.Status = 1
+		resProduct.Message = "Success"
+		resProduct.Data = maps
+
+	}else{
+		resProduct.Status = 401
+		resProduct.Message = "Invalid Token"
+		resProduct.Data = maps
+	}
+
+	this.Data["json"] = resProduct
+	this.ServeJSON()
 
 }
