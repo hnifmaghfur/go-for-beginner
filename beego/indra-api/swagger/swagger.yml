@@ -1,11 +1,11 @@
 swagger: "2.0"
 info:
-  title: beego Test API
-  description: beego has a very cool tools to autogenerate documents for your API
+  title: Indra beego API
+  description: This is my research about how to make documentation in beego
   version: 1.0.0
-  termsOfService: http://beego.me/
+  termsOfService: https://indraoctama.com/
   contact:
-    email: astaxie@gmail.com
+    email: omyank2007i@gmail.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -206,13 +206,11 @@ paths:
         type: string
       responses:
         "200":
-          description: '{ "status": 1, "message": "login success", "tokensting": "..."
-            }'
+          description: ""
           schema:
-            $ref: '#/definitions/.ResponseLogin'
+            $ref: '#/definitions/models.ResponseLogin'
         "403":
-          description: '{object} ResponseLogin { "status": 0, "message": "user not
-            exist", "tokensting": "..." }'
+          description: '{object} models.ResponseLogin'
   /user/logout:
     get:
       tags:
@@ -223,8 +221,6 @@ paths:
         "200":
           description: '{string} logout success'
 definitions:
-  .ResponseLogin:
-    type: object
   models.Object:
     title: Object
     type: object
@@ -248,6 +244,17 @@ definitions:
       Email:
         type: string
       Gender:
+        type: string
+  models.ResponseLogin:
+    title: ResponseLogin
+    type: object
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+        format: int64
+      tokensting:
         type: string
   models.User:
     title: User

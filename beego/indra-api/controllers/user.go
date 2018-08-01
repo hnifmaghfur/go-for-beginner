@@ -12,12 +12,6 @@ type UserController struct {
 	beego.Controller
 }
 
-//struct for Response Login
-type ResponseLogin struct {
-	Status int `json:"status"`
-	Message string `json:"message"`
-	Tokensting string `json:"tokensting"`
-}
 
 // @Title CreateUser
 // @Description create users
@@ -101,11 +95,11 @@ func (u *UserController) Delete() {
 // @Description Logs user into the system
 // @Param	username		query 	string	true		"The username for login"
 // @Param	password		query 	string	true		"The password for login"
-// @Success 200 {object} ResponseLogin { "status": 1, "message": "login success", "tokensting": "..." }
-// @Failure 403 {object} ResponseLogin { "status": 0, "message": "user not exist", "tokensting": "..." }
+// @Success 200 {object} models.ResponseLogin
+// @Failure 403 {object} models.ResponseLogin
 // @router /login [get]
 func (this *UserController) Login() {
-	var resLogin ResponseLogin
+	var resLogin models.ResponseLogin
 	resLogin.Status = 0
 	username := this.GetString("username")
 	password := this.GetString("password")
