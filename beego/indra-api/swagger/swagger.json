@@ -194,7 +194,7 @@
             }
         },
         "/user/login": {
-            "get": {
+            "post": {
                 "tags": [
                     "user"
                 ],
@@ -218,13 +218,13 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseLogin"
-                        }
+                        "description": "{ \"message\": \"login success\", \"status\": 1, \"tokensting\": “string” }"
+                    },
+                    "401": {
+                        "description": "Invalid method"
                     },
                     "403": {
-                        "description": "{object} models.ResponseLogin"
+                        "description": "{ \"message\": \"user not exist\", \"status\": 0, \"tokensting\": \"string\" }"
                     }
                 }
             }
@@ -365,22 +365,6 @@
                     "type": "string"
                 },
                 "Gender": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.ResponseLogin": {
-            "title": "ResponseLogin",
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "tokensting": {
                     "type": "string"
                 }
             }

@@ -95,23 +95,31 @@ func (u *UserController) Delete() {
 // @Description Logs user into the system
 // @Param	username		query 	string	true		"The username for login"
 // @Param	password		query 	string	true		"The password for login"
-// @Success 200 {object} models.ResponseLogin
-// @Failure 403 {object} models.ResponseLogin
-// @router /login [get]
+// @Success 200 { "message": "login success", "status": 1, "tokensting": “string” }
+// @Failure 403 { "message": "user not exist", "status": 0, "tokensting": "string" }
+// @Failure 401 Invalid method
+// @router /login [post]
 func (this *UserController) Login() {
-	var resLogin models.ResponseLogin
-	resLogin.Status = 0
-	username := this.GetString("username")
-	password := this.GetString("password")
+	if(this.Ctx.Input.IsPost() == true) {
+		var resLogin models.ResponseLogin
+		resLogin.Status = 0
+		username := this.Ctx.Request.PostForm.Get("username")
+		password := this.Ctx.Request.PostForm.Get("password")
 
-	if models.Login(username, password) {
-		resLogin.Status = 1
-		resLogin.Message = "login success"
-	} else {
-		this.Ctx.Output.Status = 403
-		resLogin.Message = "user not exist"
+		if models.Login(username, password) {
+			resLogin.Status = 1
+			resLogin.Message = "login success"
+		} else {
+			this.Ctx.Output.Status = 403
+			resLogin.Message = "user not exist"
+		}
+		this.Data["json"] = resLogin
+	}else{
+		this.Ctx.Output.Status = 401
+		this.Data["json"] = "invalid method!"
+
 	}
-	this.Data["json"] = resLogin
+
 	this.ServeJSON()
 }
 
