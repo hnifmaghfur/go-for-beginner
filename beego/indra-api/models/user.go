@@ -66,6 +66,7 @@ func GetAllUsers(offset int,limit int, filter *UserFilter) []orm.Params {
 	var mapsUser []orm.Params
 	whereArr := make(map[int]string)
 	whereCondition := ""
+	limitOffset := ""
 
 	i:= 0
 	if(filter.Username != ""){
@@ -82,7 +83,10 @@ func GetAllUsers(offset int,limit int, filter *UserFilter) []orm.Params {
 		whereCondition = "WHERE "+strings.Join(whereArr," AND ")
 	}
 
-	limitOffset := "LIMIT "+strconv.Itoa(offset)+","+strconv.Itoa(limit)
+	if(limit !="" && offset !="") {
+		limitOffset = "LIMIT " + strconv.Itoa(offset) + "," + strconv.Itoa(limit)
+	}
+
 	oRM.Raw("Select username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
 
 	return mapsUser
