@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 
 	"github.com/astaxie/beego"
-	"strconv"
 )
 
 // Operations about Users
@@ -33,19 +32,21 @@ func (u *UserController) Post() {
 // @Success 200 {object} models.User
 // @router / [post]
 func (this *UserController) GetAll() {
-
-	offset,_ := strconv.Atoi(this.Ctx.Request.PostForm.Get("offset"))
-	limit,_ := strconv.Atoi(this.Ctx.Request.PostForm.Get("limit"))
-	filter_status,_ := strconv.Atoi(this.Ctx.Request.PostForm.Get("filter['status']"))
-	filter_username := this.Ctx.Request.PostForm.Get("filter['username']")
-
 	var filter models.UserFilter
 	var resUser models.ResponseUser
 	resUser.Status = 0
 	resUser.Message = "Data not found"
-	if(this.Ctx.Input.IsPost() == true) {
-		if ( filter_status != 0) {
+	if(this.Ctx.Input.IsGet() == true) {
+
+		offset := this.GetString("offset")
+		limit := this.GetString("limit")
+		filter_status := this.GetString("filter[status]")
+		filter_username := this.GetString("filter[username]")
+
+		if ( filter_status != "") {
 			filter.Status = filter_status
+		}else{
+			filter.Status = ""
 		}
 
 		if (filter_username != "") {

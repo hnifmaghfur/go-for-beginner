@@ -5,7 +5,6 @@ import (
 	"github.com/astaxie/beego/orm"
 	"crypto/md5"
 	"encoding/hex"
-	"strconv"
 	"strings"
 )
 
@@ -28,7 +27,7 @@ type User struct {
 
 type UserFilter struct {
 	Username string `sql:"username"`
-	Status int `sql:"status"`
+	Status interface{} `sql:"status"`
 }
 
 
@@ -59,7 +58,7 @@ func GetUser(uid string) (u *User, err error) {
 	return nil, errors.New("User not exists")
 }
 
-func GetAllUsers(offset int,limit int, filter UserFilter) []orm.Params {
+func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) []orm.Params {
 	oRM := orm.NewOrm()
 	var mapsUser []orm.Params
 	var whereArr []string
@@ -67,13 +66,16 @@ func GetAllUsers(offset int,limit int, filter UserFilter) []orm.Params {
 	limitOffset := ""
 
 	i:= 0
+
 	if(filter.Username != ""){
-		whereArr[i] = " username LIKE '%"+filter.Username+"%'"
+		fUsername := " username LIKE '%"+filter.Username+"%'"
+		whereArr = append(whereArr,fUsername)
 		i++
 	}
 
-	if(filter.Status != 0){
-		whereArr[i] = " status ="+strconv.Itoa(filter.Status)
+	if(filter.Status != ""){
+		fStatus := " status ="+filter.Status.(string)
+		whereArr = append(whereArr,fStatus)
 		i++
 	}
 
@@ -81,8 +83,8 @@ func GetAllUsers(offset int,limit int, filter UserFilter) []orm.Params {
 		whereCondition = "WHERE "+strings.Join(whereArr," AND ")
 	}
 
-	if(offset !=0) {
-		limitOffset = "LIMIT " + strconv.Itoa(offset) + "," + strconv.Itoa(limit)
+	if(offset.(string) !="" && limit.(string) !="") {
+		limitOffset = " LIMIT " + offset.(string)+ "," + limit.(string)
 	}
 
 	oRM.Raw("Select username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
