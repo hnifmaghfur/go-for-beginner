@@ -70,12 +70,12 @@ func GetAllUsers(offset int,limit int, filter *UserFilter) []orm.Params {
 
 	i:= 0
 	if(filter.Username != ""){
-		whereArr[i] = whereCondition+" username LIKE '%"+filter.Username+"%'"
+		whereArr[i] = " username LIKE '%"+filter.Username+"%'"
 		i++
 	}
 
 	if(filter.Status != "" || filter.Status != 0){
-		whereArr[i] = whereCondition+" status ="+filter.Status
+		whereArr[i] = " status ="+filter.Status
 		i++
 	}
 
