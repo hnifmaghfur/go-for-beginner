@@ -95,7 +95,7 @@ func (u *UserController) Delete() {
 // @Description Logs user into the system
 // @Param	username		query 	string	true		"The username for login"
 // @Param	password		query 	string	true		"The password for login"
-// @Success 200 { "message": "login success", "status": 1, "tokensting": “string” }
+// @Success 200 { "message": "login success", "status": 1, "tokensting": "string" }
 // @Failure 403 { "message": "user not exist", "status": 0, "tokensting": "string" }
 // @Failure 401 Invalid method
 // @router /login [post]

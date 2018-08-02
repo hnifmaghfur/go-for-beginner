@@ -61,6 +61,12 @@
 			"revisionTime": "2018-07-31T13:18:48Z"
 		},
 		{
+			"checksumSHA1": "0JpqpsgAzP27Xu+k+63cNrnwNEo=",
+			"path": "github.com/gbrlsnchs/jwt",
+			"revision": "c3625abb8d9cc771ae11d7497c54f21136c1a09d",
+			"revisionTime": "2018-07-19T21:34:14Z"
+		},
+		{
 			"checksumSHA1": "k9izYoyobR8Upb3Yjsw9htgE/Mk=",
 			"path": "github.com/go-sql-driver/mysql",
 			"revision": "99ff426eb706cffe92ff3d058e168b278cabf7c7",
