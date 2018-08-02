@@ -75,7 +75,7 @@ func GetAllUsers(offset int,limit int, filter *UserFilter) []orm.Params {
 	}
 
 	if(filter.Status != "" || filter.Status != 0){
-		whereArr[i] = " status ="+filter.Status
+		whereArr[i] = " status ="+strconv.Itoa(filter.Status)
 		i++
 	}
 
