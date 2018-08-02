@@ -73,12 +73,12 @@ func GetAllUsers(offset int,limit int, filter *UserFilter) []orm.Params {
 		i++
 	}
 
-	if(filter.Status != ""){
+	if(filter.Status != "" || filter.Status != 0){
 		whereArr[i] = whereCondition+" status ="+filter.Status
 		i++
 	}
 
-	if(i > 0){
+	if(len(whereArr)>0){
 		whereCondition = "WHERE "+strings.Join(whereArr," AND ")
 	}
 
