@@ -14,9 +14,7 @@ var (
 )
 
 func init() {
-	UserList = make(map[string]*User)
-	u := User{"user_11111", "astaxie", "11111"}
-	UserList["user_11111"] = &u
+
 }
 
 type User struct {
@@ -61,10 +59,10 @@ func GetUser(uid string) (u *User, err error) {
 	return nil, errors.New("User not exists")
 }
 
-func GetAllUsers(offset int,limit int, filter *UserFilter) []orm.Params {
+func GetAllUsers(offset int,limit int, filter UserFilter) []orm.Params {
 	oRM := orm.NewOrm()
 	var mapsUser []orm.Params
-	whereArr := make(map[int]string)
+	var whereArr []string
 	whereCondition := ""
 	limitOffset := ""
 
@@ -74,7 +72,7 @@ func GetAllUsers(offset int,limit int, filter *UserFilter) []orm.Params {
 		i++
 	}
 
-	if(filter.Status != "" || filter.Status != 0){
+	if(filter.Status != 0){
 		whereArr[i] = " status ="+strconv.Itoa(filter.Status)
 		i++
 	}
@@ -83,7 +81,7 @@ func GetAllUsers(offset int,limit int, filter *UserFilter) []orm.Params {
 		whereCondition = "WHERE "+strings.Join(whereArr," AND ")
 	}
 
-	if(limit !="" && offset !="") {
+	if(offset !=0) {
 		limitOffset = "LIMIT " + strconv.Itoa(offset) + "," + strconv.Itoa(limit)
 	}
 

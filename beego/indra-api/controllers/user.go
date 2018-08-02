@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/astaxie/beego"
+	"strconv"
 )
 
 // Operations about Users
@@ -30,11 +31,42 @@ func (u *UserController) Post() {
 // @Title GetAll
 // @Description get all Users
 // @Success 200 {object} models.User
-// @router / [get]
-func (u *UserController) GetAll() {
-	users := models.GetAllUsers()
-	u.Data["json"] = users
-	u.ServeJSON()
+// @router / [post]
+func (this *UserController) GetAll() {
+
+	offset,_ := strconv.Atoi(this.Ctx.Request.PostForm.Get("offset"))
+	limit,_ := strconv.Atoi(this.Ctx.Request.PostForm.Get("limit"))
+	filter_status,_ := strconv.Atoi(this.Ctx.Request.PostForm.Get("filter['status']"))
+	filter_username := this.Ctx.Request.PostForm.Get("filter['username']")
+
+	var filter models.UserFilter
+	var resUser models.ResponseUser
+	resUser.Status = 0
+	resUser.Message = "Data not found"
+	if(this.Ctx.Input.IsPost() == true) {
+		if ( filter_status != 0) {
+			filter.Status = filter_status
+		}
+
+		if (filter_username != "") {
+			filter.Username = filter_username
+		}
+
+		users := models.GetAllUsers(offset, limit, filter)
+
+		if (len(users) > 0) {
+			resUser.Status = 1
+			resUser.Message = "Success"
+			resUser.Data = users
+
+		}
+	}else{
+		this.Ctx.Output.Status = 401
+		resUser.Status = 0
+		resUser.Message = "Invalid Method"
+	}
+	this.Data["json"] = resUser
+	this.ServeJSON()
 }
 
 // @Title Get
