@@ -54,7 +54,7 @@ type ResponseGetUser struct {
 	Offset int `json:"offset"`
 	Limit int `json:"limit"`
 	Count int `json:"count"`
-	Data  []orm.Params
+	Data  []orm.Params `json:"data"`
 }
 
 //struct for Response Get All User
@@ -64,7 +64,7 @@ type ResponseGetAllUser struct {
 	Offset int `json:"offset"`
 	Limit int `json:"limit"`
 	Count int `json:"count"`
-	Data  []orm.Params
+	Data  []orm.Params `json:"data"`
 }
 
 func AddUser(u User) string {

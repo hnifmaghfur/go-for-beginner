@@ -18,7 +18,7 @@ func init() {
 	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"],
 		beego.ControllerComments{
 			Method: "GetAll",
-			Router: `/getall`,
+			Router: `/`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
@@ -57,14 +57,6 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
 		beego.ControllerComments{
-			Method: "GetAll",
-			Router: `/`,
-			AllowHTTPMethods: []string{"post"},
-			MethodParams: param.Make(),
-			Params: nil})
-
-	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
-		beego.ControllerComments{
 			Method: "Put",
 			Router: `/:uid`,
 			AllowHTTPMethods: []string{"put"},
@@ -83,6 +75,14 @@ func init() {
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/get/:username`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "GetAll",
+			Router: `/getall`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})

@@ -29,8 +29,12 @@ func (u *UserController) Post() {
 
 // @Title GetAll
 // @Description get all Users
-// @Success 200 {object} models.ResponseGetAllUser
-// @router / [post]
+// @Param	filter[username]		query 	string	false	"username"
+// @Param	offset			query 	int	false	offset""
+// @Param	limit			query 	int	false	"limit"
+// @Param	filter[status]			query 	int	false	"status"
+// @Success 200 {object} models.ResponseGetAllUser true  "body for user content"
+// @router /getall [get]
 func (this *UserController) GetAll() {
 	var filter models.UserFilter
 	var resUserGetAll models.ResponseGetAllUser
@@ -80,7 +84,7 @@ func (this *UserController) GetAll() {
 // @Param	username		path 	string	true		"The key for staticblock"
 // @Success 200 {object} models.ResponseGetUser
 // @Failure 403 :username is empty
-// @router /:username [get]
+// @router /get/:username [get]
 func (this *UserController) Get() {
 	var resUserGetUser models.ResponseGetUser
 	resUserGetUser.Status = 0

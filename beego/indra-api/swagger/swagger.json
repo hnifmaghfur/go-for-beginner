@@ -155,11 +155,97 @@
                 "tags": [
                     "user"
                 ],
-                "description": "get all Users",
-                "operationId": "UserController.GetAll",
+                "description": "create users",
+                "operationId": "UserController.CreateUser",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for user content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{int} models.User.Id"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/user/get/{username}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "get user by username",
+                "operationId": "UserController.Get",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseGetUser"
+                        }
+                    },
+                    "403": {
+                        "description": ":username is empty"
+                    }
+                }
+            }
+        },
+        "/user/getall": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "get all Users",
+                "operationId": "UserController.GetAll",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "filter[username]",
+                        "description": "username",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "offset",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "limit",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "filter[status]",
+                        "description": "status",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "true  \"body for user content\"",
                         "schema": {
                             "$ref": "#/definitions/models.ResponseGetAllUser"
                         }
@@ -278,38 +364,12 @@
                     }
                 }
             }
-        },
-        "/user/{username}": {
-            "get": {
-                "tags": [
-                    "user"
-                ],
-                "description": "get user by username",
-                "operationId": "UserController.Get",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "username",
-                        "description": "The key for staticblock",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseGetUser"
-                        }
-                    },
-                    "403": {
-                        "description": ":username is empty"
-                    }
-                }
-            }
         }
     },
     "definitions": {
+        ".Params": {
+            "type": "object"
+        },
         "models.Object": {
             "title": "Object",
             "type": "object",
@@ -409,9 +469,6 @@
                     "type": "string"
                 }
             }
-        },
-        "orm.Params": {
-            "type": "object"
         }
     },
     "tags": [
