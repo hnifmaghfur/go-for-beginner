@@ -262,13 +262,13 @@ definitions:
     title: ResponseGetAllUser
     type: object
     properties:
-      Data:
-        type: array
-        items:
-          $ref: '#/definitions/orm.Params'
       count:
         type: integer
         format: int64
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/orm.Params'
       limit:
         type: integer
         format: int64
@@ -284,13 +284,13 @@ definitions:
     title: ResponseGetUser
     type: object
     properties:
-      Data:
-        type: array
-        items:
-          $ref: '#/definitions/orm.Params'
       count:
         type: integer
         format: int64
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/orm.Params'
       limit:
         type: integer
         format: int64

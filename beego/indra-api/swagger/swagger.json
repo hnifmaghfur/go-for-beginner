@@ -390,15 +390,15 @@
             "title": "ResponseGetAllUser",
             "type": "object",
             "properties": {
-                "Data": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "data": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/orm.Params"
                     }
-                },
-                "count": {
-                    "type": "integer",
-                    "format": "int64"
                 },
                 "limit": {
                     "type": "integer",
@@ -421,15 +421,15 @@
             "title": "ResponseGetUser",
             "type": "object",
             "properties": {
-                "Data": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "data": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/orm.Params"
                     }
-                },
-                "count": {
-                    "type": "integer",
-                    "format": "int64"
                 },
                 "limit": {
                     "type": "integer",

@@ -96,9 +96,9 @@ func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) Respon
 	oRM := orm.NewOrm()
 	var mapsUser []orm.Params
 	var whereArr []string
-	whereCondition := ""
-	limitOffset := " LIMIT 0,25 "
+	var limitOffset string
 	var resUser ResponseUser
+	whereCondition := ""
 
 	if(filter.Username != ""){
 		fUsername := " username LIKE '%"+filter.Username+"%'"
@@ -120,6 +120,10 @@ func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) Respon
 		limitInt,_ := strconv.Atoi(limit.(string))
 		resUser.Offset = offsetInt
 		resUser.Limit = limitInt
+	}else{
+		limitOffset = " LIMIT 0,25 "
+		resUser.Offset = 0
+		resUser.Limit = 25
 	}
 
 	num,_ :=oRM.Raw("Select username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
