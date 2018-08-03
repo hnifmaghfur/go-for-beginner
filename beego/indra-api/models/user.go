@@ -14,6 +14,7 @@ var (
 
 func init() {
 
+
 }
 
 type User struct {
@@ -63,20 +64,16 @@ func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) []orm.
 	var mapsUser []orm.Params
 	var whereArr []string
 	whereCondition := ""
-	limitOffset := ""
-
-	i:= 0
+	limitOffset := " LIMIT 0,25 "
 
 	if(filter.Username != ""){
 		fUsername := " username LIKE '%"+filter.Username+"%'"
 		whereArr = append(whereArr,fUsername)
-		i++
 	}
 
 	if(filter.Status != ""){
 		fStatus := " status ="+filter.Status.(string)
 		whereArr = append(whereArr,fStatus)
-		i++
 	}
 
 	if(len(whereArr)>0){
