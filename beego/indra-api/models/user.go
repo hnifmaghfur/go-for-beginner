@@ -68,7 +68,7 @@ type ResponseGetAllUser struct {
 }
 
 func AddUser(u User) string {
-	return "";
+	return ""
 }
 
 func GetUser(username string) ResponseUser {
