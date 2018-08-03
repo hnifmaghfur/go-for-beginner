@@ -151,7 +151,7 @@
             }
         },
         "/user/": {
-            "get": {
+            "post": {
                 "tags": [
                     "user"
                 ],
@@ -161,34 +161,8 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.ResponseGetAllUser"
                         }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "user"
-                ],
-                "description": "create users",
-                "operationId": "UserController.CreateUser",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "body for user content",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{int} models.User.Id"
-                    },
-                    "403": {
-                        "description": "body is empty"
                     }
                 }
             }
@@ -218,7 +192,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{ \"message\": \"login success\", \"status\": 1, \"tokensting\": “string” }"
+                        "description": "{ \"message\": \"login success\", \"status\": 1, \"tokensting\": \"string\" }"
                     },
                     "401": {
                         "description": "Invalid method"
@@ -244,33 +218,6 @@
             }
         },
         "/user/{uid}": {
-            "get": {
-                "tags": [
-                    "user"
-                ],
-                "description": "get user by uid",
-                "operationId": "UserController.Get",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "uid",
-                        "description": "The key for staticblock",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    },
-                    "403": {
-                        "description": ":uid is empty"
-                    }
-                }
-            },
             "put": {
                 "tags": [
                     "user"
@@ -331,6 +278,35 @@
                     }
                 }
             }
+        },
+        "/user/{username}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "get user by username",
+                "operationId": "UserController.Get",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseGetUser"
+                        }
+                    },
+                    "403": {
+                        "description": ":username is empty"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -350,22 +326,65 @@
                 }
             }
         },
-        "models.Profile": {
-            "title": "Profile",
+        "models.ResponseGetAllUser": {
+            "title": "ResponseGetAllUser",
             "type": "object",
             "properties": {
-                "Address": {
-                    "type": "string"
+                "Data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/orm.Params"
+                    }
                 },
-                "Age": {
+                "count": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "Email": {
+                "limit": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "message": {
                     "type": "string"
                 },
-                "Gender": {
+                "offset": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "status": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.ResponseGetUser": {
+            "title": "ResponseGetUser",
+            "type": "object",
+            "properties": {
+                "Data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/orm.Params"
+                    }
+                },
+                "count": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "limit": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "message": {
                     "type": "string"
+                },
+                "offset": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "status": {
+                    "type": "integer",
+                    "format": "int64"
                 }
             }
         },
@@ -373,19 +392,26 @@
             "title": "User",
             "type": "object",
             "properties": {
-                "Id": {
+                "created_date": {
                     "type": "string"
                 },
-                "Password": {
+                "password": {
                     "type": "string"
                 },
-                "Profile": {
-                    "$ref": "#/definitions/models.Profile"
+                "status": {
+                    "type": "integer",
+                    "format": "int64"
                 },
-                "Username": {
+                "update_date": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
+        },
+        "orm.Params": {
+            "type": "object"
         }
     },
     "tags": [

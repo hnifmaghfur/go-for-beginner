@@ -6,6 +6,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"strings"
+	"strconv"
 )
 
 var (
@@ -39,12 +40,30 @@ type ResponseLogin struct {
 	Tokensting string `json:"tokensting"`
 }
 
-//struct for Response User
 type ResponseUser struct {
+	Count int
+	Offset int
+	Limit int
+	Data []orm.Params
+}
+
+//struct for Response Get User
+type ResponseGetUser struct {
 	Status int `json:"status"`
 	Message string `json:"message"`
 	Offset int `json:"offset"`
 	Limit int `json:"limit"`
+	Count int `json:"count"`
+	Data  []orm.Params
+}
+
+//struct for Response Get All User
+type ResponseGetAllUser struct {
+	Status int `json:"status"`
+	Message string `json:"message"`
+	Offset int `json:"offset"`
+	Limit int `json:"limit"`
+	Count int `json:"count"`
 	Data  []orm.Params
 }
 
@@ -52,19 +71,34 @@ func AddUser(u User) string {
 	return "";
 }
 
-func GetUser(uid string) (u *User, err error) {
-	if u, ok := UserList[uid]; ok {
-		return u, nil
+func GetUser(username string) ResponseUser {
+	oRM := orm.NewOrm()
+	var mapsUser []orm.Params
+
+	whereCondition := ""
+	limitOffset := " LIMIT 0,1 "
+	var resUser ResponseUser
+
+	if(username != ""){
+		fUsername := " username = '"+username+"'"
+		whereCondition = " WHERE "+fUsername
 	}
-	return nil, errors.New("User not exists")
+
+	num,_ :=oRM.Raw("Select username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
+
+	resUser.Count = int(num)
+	resUser.Data = mapsUser
+	return resUser
+
 }
 
-func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) []orm.Params {
+func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) ResponseUser {
 	oRM := orm.NewOrm()
 	var mapsUser []orm.Params
 	var whereArr []string
 	whereCondition := ""
 	limitOffset := " LIMIT 0,25 "
+	var resUser ResponseUser
 
 	if(filter.Username != ""){
 		fUsername := " username LIKE '%"+filter.Username+"%'"
@@ -82,11 +116,16 @@ func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) []orm.
 
 	if(offset.(string) !="" && limit.(string) !="") {
 		limitOffset = " LIMIT " + offset.(string)+ "," + limit.(string)
+		offsetInt,_ := strconv.Atoi(offset.(string))
+		limitInt,_ := strconv.Atoi(limit.(string))
+		resUser.Offset = offsetInt
+		resUser.Limit = limitInt
 	}
 
-	oRM.Raw("Select username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
-
-	return mapsUser
+	num,_ :=oRM.Raw("Select username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
+	resUser.Count = int(num)
+	resUser.Data = mapsUser
+	return resUser
 }
 
 func UpdateUser(uid string, uu *User) (a *User, err error) {

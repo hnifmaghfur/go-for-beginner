@@ -101,7 +101,7 @@ paths:
         "403":
           description: objectId is empty
   /user/:
-    get:
+    post:
       tags:
       - user
       description: get all Users
@@ -110,43 +110,8 @@ paths:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.User'
-    post:
-      tags:
-      - user
-      description: create users
-      operationId: UserController.CreateUser
-      parameters:
-      - in: body
-        name: body
-        description: body for user content
-        required: true
-        schema:
-          $ref: '#/definitions/models.User'
-      responses:
-        "200":
-          description: '{int} models.User.Id'
-        "403":
-          description: body is empty
+            $ref: '#/definitions/models.ResponseGetAllUser'
   /user/{uid}:
-    get:
-      tags:
-      - user
-      description: get user by uid
-      operationId: UserController.Get
-      parameters:
-      - in: path
-        name: uid
-        description: The key for staticblock
-        required: true
-        type: string
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.User'
-        "403":
-          description: :uid is empty
     put:
       tags:
       - user
@@ -187,6 +152,25 @@ paths:
           description: '{string} delete success!'
         "403":
           description: uid is empty
+  /user/{username}:
+    get:
+      tags:
+      - user
+      description: get user by username
+      operationId: UserController.Get
+      parameters:
+      - in: path
+        name: username
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.ResponseGetUser'
+        "403":
+          description: :username is empty
   /user/login:
     post:
       tags:
@@ -206,7 +190,7 @@ paths:
         type: string
       responses:
         "200":
-          description: '{ "message": "login success", "status": 1, "tokensting": “string”
+          description: '{ "message": "login success", "status": 1, "tokensting": "string"
             }'
         "401":
           description: Invalid method
@@ -234,31 +218,67 @@ definitions:
       Score:
         type: integer
         format: int64
-  models.Profile:
-    title: Profile
+  models.ResponseGetAllUser:
+    title: ResponseGetAllUser
     type: object
     properties:
-      Address:
-        type: string
-      Age:
+      Data:
+        type: array
+        items:
+          $ref: '#/definitions/orm.Params'
+      count:
         type: integer
         format: int64
-      Email:
+      limit:
+        type: integer
+        format: int64
+      message:
         type: string
-      Gender:
+      offset:
+        type: integer
+        format: int64
+      status:
+        type: integer
+        format: int64
+  models.ResponseGetUser:
+    title: ResponseGetUser
+    type: object
+    properties:
+      Data:
+        type: array
+        items:
+          $ref: '#/definitions/orm.Params'
+      count:
+        type: integer
+        format: int64
+      limit:
+        type: integer
+        format: int64
+      message:
         type: string
+      offset:
+        type: integer
+        format: int64
+      status:
+        type: integer
+        format: int64
   models.User:
     title: User
     type: object
     properties:
-      Id:
+      created_date:
         type: string
-      Password:
+      password:
         type: string
-      Profile:
-        $ref: '#/definitions/models.Profile'
-      Username:
+      status:
+        type: integer
+        format: int64
+      update_date:
         type: string
+      username:
+        type: string
+  orm.Params:
+    type: object
 tags:
 - name: object
   description: |

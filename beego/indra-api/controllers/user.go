@@ -29,13 +29,14 @@ func (u *UserController) Post() {
 
 // @Title GetAll
 // @Description get all Users
-// @Success 200 {object} models.User
+// @Success 200 {object} models.ResponseGetAllUser
 // @router / [post]
 func (this *UserController) GetAll() {
 	var filter models.UserFilter
-	var resUser models.ResponseUser
-	resUser.Status = 0
-	resUser.Message = "Data not found"
+	var resUserGetAll models.ResponseGetAllUser
+
+	resUserGetAll.Status = 0
+	resUserGetAll.Message = "Data not found"
 	if(this.Ctx.Input.IsGet() == true) {
 
 		offset := this.GetString("offset")
@@ -53,40 +54,58 @@ func (this *UserController) GetAll() {
 			filter.Username = filter_username
 		}
 
-		users := models.GetAllUsers(offset, limit, filter)
+		resUser := models.GetAllUsers(offset, limit, filter)
 
-		if (len(users) > 0) {
-			resUser.Status = 1
-			resUser.Message = "Success"
-			resUser.Data = users
+		if (resUser.Count > 0) {
+			resUserGetAll.Status = 1
+			resUserGetAll.Message = "Success"
+			resUserGetAll.Data = resUser.Data
+			resUserGetAll.Limit = resUser.Limit
+			resUserGetAll.Offset = resUser.Offset
+			resUserGetAll.Count = resUser.Count
 
 		}
+
 	}else{
 		this.Ctx.Output.Status = 401
-		resUser.Status = 0
-		resUser.Message = "Invalid Method"
+		resUserGetAll.Status = 0
+		resUserGetAll.Message = "Invalid Method"
 	}
-	this.Data["json"] = resUser
+	this.Data["json"] = resUserGetAll
 	this.ServeJSON()
 }
 
 // @Title Get
-// @Description get user by uid
-// @Param	uid		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.User
-// @Failure 403 :uid is empty
-// @router /:uid [get]
-func (u *UserController) Get() {
-	uid := u.GetString(":uid")
-	if uid != "" {
-		user, err := models.GetUser(uid)
-		if err != nil {
-			u.Data["json"] = err.Error()
-		} else {
-			u.Data["json"] = user
+// @Description get user by username
+// @Param	username		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.ResponseGetUser
+// @Failure 403 :username is empty
+// @router /:username [get]
+func (this *UserController) Get() {
+	var resUserGetUser models.ResponseGetUser
+	resUserGetUser.Status = 0
+	resUserGetUser.Message = "Data not found"
+	if(this.Ctx.Input.IsGet() == true) {
+		username := this.GetString(":username")
+		if(username != "") {
+			resUser := models.GetUser(username)
+			if (resUser.Count > 0) {
+				resUserGetUser.Status = 1
+				resUserGetUser.Message = "Success"
+				resUserGetUser.Data = resUser.Data
+				resUserGetUser.Limit = resUser.Limit
+				resUserGetUser.Offset = resUser.Offset
+				resUserGetUser.Count = resUser.Count
+			}
 		}
+
+	}else{
+		this.Ctx.Output.Status = 401
+		resUserGetUser.Status = 0
+		resUserGetUser.Message = "Invalid Method"
 	}
-	u.ServeJSON()
+	this.Data["json"] = resUserGetUser
+	this.ServeJSON()
 }
 
 // @Title Update
