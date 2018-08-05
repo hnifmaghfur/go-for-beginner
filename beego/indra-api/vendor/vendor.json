@@ -79,6 +79,12 @@
 			"revisionTime": "2018-07-19T07:19:42Z"
 		},
 		{
+			"checksumSHA1": "SqhDMoHYwafnWYlWxYJXfw7Dbbk=",
+			"path": "github.com/vjeantet/jodaTime",
+			"revision": "be924ce213fb35f66c810b61e051965eb78b82d0",
+			"revisionTime": "2017-08-16T15:02:30Z"
+		},
+		{
 			"checksumSHA1": "J6lNRPdrYhKft6S8x33K9brxyhE=",
 			"path": "golang.org/x/crypto/acme",
 			"revision": "c126467f60eb25f8f27e5a981f32a87e3965053f",

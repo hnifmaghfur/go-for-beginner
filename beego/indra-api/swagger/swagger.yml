@@ -100,24 +100,6 @@ paths:
           description: '{string} delete success!'
         "403":
           description: objectId is empty
-  /user/:
-    post:
-      tags:
-      - user
-      description: create users
-      operationId: UserController.CreateUser
-      parameters:
-      - in: body
-        name: body
-        description: body for user content
-        required: true
-        schema:
-          $ref: '#/definitions/models.User'
-      responses:
-        "200":
-          description: '{int} models.User.Id'
-        "403":
-          description: body is empty
   /user/{uid}:
     put:
       tags:
@@ -135,12 +117,12 @@ paths:
         description: body for user content
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/.User'
       responses:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/.User'
         "403":
           description: :uid is not int
     delete:
@@ -159,6 +141,28 @@ paths:
           description: '{string} delete success!'
         "403":
           description: uid is empty
+  /user/add:
+    post:
+      tags:
+      - user
+      description: create users
+      operationId: UserController.CreateUser
+      parameters:
+      - in: form
+        name: username
+        description: The username for signup
+        required: true
+        type: string
+      - in: form
+        name: password
+        description: The password for signup
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.ResponseInsertUser'
   /user/get/{username}:
     get:
       tags:
@@ -216,12 +220,12 @@ paths:
       description: Logs user into the system
       operationId: UserController.Login
       parameters:
-      - in: query
+      - in: form
         name: username
         description: The username for login
         required: true
         type: string
-      - in: query
+      - in: form
         name: password
         description: The password for login
         required: true
@@ -246,6 +250,10 @@ paths:
           description: '{string} logout success'
 definitions:
   .Params:
+    type: object
+  .User:
+    type: object
+  .false:
     type: object
   models.Object:
     title: Object
@@ -302,21 +310,17 @@ definitions:
       status:
         type: integer
         format: int64
-  models.User:
-    title: User
+  models.ResponseInsertUser:
+    title: ResponseInsertUser
     type: object
     properties:
-      created_date:
-        type: string
-      password:
+      data:
+        $ref: '#/definitions/2352.0xc420256330.false'
+      message:
         type: string
       status:
         type: integer
         format: int64
-      update_date:
-        type: string
-      username:
-        type: string
 tags:
 - name: object
   description: |

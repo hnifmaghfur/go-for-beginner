@@ -6,15 +6,6 @@ import (
 )
 
 func init() {
-
-	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"],
-		beego.ControllerComments{
-			Method: "Post",
-			Router: `/`,
-			AllowHTTPMethods: []string{"post"},
-			MethodParams: param.Make(),
-			Params: nil})
-
 	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"],
 		beego.ControllerComments{
 			Method: "GetAll",
@@ -49,14 +40,6 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
 		beego.ControllerComments{
-			Method: "Post",
-			Router: `/`,
-			AllowHTTPMethods: []string{"post"},
-			MethodParams: param.Make(),
-			Params: nil})
-
-	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
-		beego.ControllerComments{
 			Method: "Put",
 			Router: `/:uid`,
 			AllowHTTPMethods: []string{"put"},
@@ -68,6 +51,14 @@ func init() {
 			Method: "Delete",
 			Router: `/:uid`,
 			AllowHTTPMethods: []string{"delete"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "Add",
+			Router: `/add`,
+			AllowHTTPMethods: []string{"post"},
 			MethodParams: param.Make(),
 			Params: nil})
 

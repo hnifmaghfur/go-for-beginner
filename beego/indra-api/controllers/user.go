@@ -15,16 +15,33 @@ type UserController struct {
 
 // @Title CreateUser
 // @Description create users
-// @Param	body		body 	models.User	true		"body for user content"
-// @Success 200 {int} models.User.Id
-// @Failure 403 body is empty
-// @router / [post]
-func (u *UserController) Post() {
-	var user models.User
-	json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-	uid := models.AddUser(user)
-	u.Data["json"] = map[string]string{"uid": uid}
-	u.ServeJSON()
+// @Param	username		form 	string	true		"The username for signup"
+// @Param	password		form 	string	true		"The password for signup"
+// @Success 200 {object} models.ResponseInsertUser
+// @router /add [post]
+func (this *UserController) Add() {
+
+	var users models.Users
+	var resInsert models.ResponseInsertUser
+	resInsert.Status = 0
+	resInsert.Message = "failed to insert data user"
+
+	username := this.Ctx.Request.PostForm.Get("username")
+	password := this.Ctx.Request.PostForm.Get("password")
+
+	users.Username = username
+	users.Password = password
+
+	id_user := models.AddUser(users)
+
+	if(id_user != 0){
+		resInsert.Status = 1
+		resInsert.Message = "Success"
+		resInsert.Data.Id_user = id_user
+	}
+
+	this.Data["json"] = resInsert
+	this.ServeJSON()
 }
 
 // @Title GetAll
@@ -122,9 +139,9 @@ func (this *UserController) Get() {
 func (u *UserController) Put() {
 	uid := u.GetString(":uid")
 	if uid != "" {
-		var user models.User
-		json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-		uu, err := models.UpdateUser(uid, &user)
+		var users models.Users
+		json.Unmarshal(u.Ctx.Input.RequestBody, &users)
+		uu, err := models.UpdateUser(uid, &users)
 		if err != nil {
 			u.Data["json"] = err.Error()
 		} else {
@@ -149,8 +166,8 @@ func (u *UserController) Delete() {
 
 // @Title Login
 // @Description Logs user into the system
-// @Param	username		query 	string	true		"The username for login"
-// @Param	password		query 	string	true		"The password for login"
+// @Param	username		form 	string	true		"The username for login"
+// @Param	password		form 	string	true		"The password for login"
 // @Success 200 { "message": "login success", "status": 1, "tokensting": "string" }
 // @Failure 403 { "message": "user not exist", "status": 0, "tokensting": "string" }
 // @Failure 401 Invalid method

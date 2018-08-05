@@ -1,29 +1,27 @@
 package models
 
 import (
-	"errors"
 	"github.com/astaxie/beego/orm"
 	"crypto/md5"
 	"encoding/hex"
 	"strings"
 	"strconv"
+	"time"
+	"github.com/vjeantet/jodaTime"
 )
 
-var (
-	UserList map[string]*User
-)
 
 func init() {
-
-
+	orm.RegisterModel(new(Users))
 }
 
-type User struct {
+type Users struct {
+	Id int `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Status int `json:"status"`
 	CreatedDate string `json:"created_date"`
-	UpdateDate string `json:"update_date"`
+	UpdatedDate string `json:"updated_date"`
 
 }
 
@@ -67,8 +65,32 @@ type ResponseGetAllUser struct {
 	Data  []orm.Params `json:"data"`
 }
 
-func AddUser(u User) string {
-	return ""
+type ResponseInsertUser struct {
+	Status int `json:"status"`
+	Message string `json:"message"`
+	Data  struct{Id_user int64 `json:"id_user"`} `json:"data"`
+}
+
+func AddUser(users Users) int64 {
+	oRM := orm.NewOrm()
+	hasher := md5.New()
+	hasher.Write([]byte(users.Password))
+	oRM.Begin()
+
+	users.Password = hex.EncodeToString(hasher.Sum(nil))
+	users.Status = 1 //active
+	users.CreatedDate =  jodaTime.Format("YYYY-MM-dd HH:mm:ss", time.Now()) //time now
+	users.UpdatedDate =  jodaTime.Format("YYYY-MM-dd HH:mm:ss", time.Now()) //time now
+
+	id_user,err := oRM.Insert(&users)
+	if(err != nil){
+		println(users.CreatedDate)
+		println(err.Error())
+		oRM.Rollback()
+		return 0
+	}
+	oRM.Commit()
+	return id_user
 }
 
 func GetUser(username string) ResponseUser {
@@ -126,20 +148,14 @@ func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) Respon
 		resUser.Limit = 25
 	}
 
-	num,_ :=oRM.Raw("Select username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
+	num,_ :=oRM.Raw("SELECT username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
 	resUser.Count = int(num)
 	resUser.Data = mapsUser
 	return resUser
 }
 
-func UpdateUser(uid string, uu *User) (a *User, err error) {
-	if u, ok := UserList[uid]; ok {
-		if uu.Username != "" {
-			u.Username = uu.Username
-		}
-		return u, nil
-	}
-	return nil, errors.New("User Not Exist")
+func UpdateUser(uid string, uu *Users) (a *Users, err error) {
+	return
 }
 
 func Login(username, password string) bool {
@@ -161,5 +177,5 @@ func Login(username, password string) bool {
 }
 
 func DeleteUser(uid string) {
-	delete(UserList, uid)
+	return
 }
