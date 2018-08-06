@@ -175,10 +175,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseInsertUser"
-                        }
+                        "description": "{ \"status\": 1, \"message\": \"Success\", \"data\": { \"id_user\": 4 } }"
                     }
                 }
             }
@@ -201,10 +198,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseGetUser"
-                        }
+                        "description": "{ \"status\": 1, \"message\": \"Success\", \"offset\": 0, \"limit\": 0, \"count\": 1, \"data\": [ { \"created_date\": \"2018-08-02 12:27:04\", \"status\": \"1\", \"updated_date\": null, \"username\": \"indrabeego\" } ] }"
                     },
                     "403": {
                         "description": ":username is empty"
@@ -250,10 +244,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "true  \"body for user content\"",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseGetAllUser"
-                        }
+                        "description": "{ \"status\": 1, \"message\": \"Success\", \"offset\": 0, \"limit\": 25, \"count\": 2, \"data\": [ { \"created_date\": \"2018-08-02 12:27:04\", \"status\": \"1\", \"updated_date\": null, \"username\": \"indrabeego\" }, { \"created_date\": \"2018-08-05 18:41:27\", \"status\": \"1\", \"updated_date\": \"2018-08-05 18:41:27\", \"username\": \"dewibeego\" } ] } true  \"body for user content\""
                     }
                 }
             }
@@ -372,13 +363,7 @@
         }
     },
     "definitions": {
-        ".Params": {
-            "type": "object"
-        },
         ".User": {
-            "type": "object"
-        },
-        ".false": {
             "type": "object"
         },
         "models.Object": {
@@ -392,84 +377,6 @@
                     "type": "string"
                 },
                 "Score": {
-                    "type": "integer",
-                    "format": "int64"
-                }
-            }
-        },
-        "models.ResponseGetAllUser": {
-            "title": "ResponseGetAllUser",
-            "type": "object",
-            "properties": {
-                "count": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/orm.Params"
-                    }
-                },
-                "limit": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "offset": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "status": {
-                    "type": "integer",
-                    "format": "int64"
-                }
-            }
-        },
-        "models.ResponseGetUser": {
-            "title": "ResponseGetUser",
-            "type": "object",
-            "properties": {
-                "count": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/orm.Params"
-                    }
-                },
-                "limit": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "offset": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "status": {
-                    "type": "integer",
-                    "format": "int64"
-                }
-            }
-        },
-        "models.ResponseInsertUser": {
-            "title": "ResponseInsertUser",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/2352.0xc420256330.false"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "integer",
                     "format": "int64"
                 }

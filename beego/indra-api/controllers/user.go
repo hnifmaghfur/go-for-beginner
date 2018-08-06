@@ -17,7 +17,7 @@ type UserController struct {
 // @Description create users
 // @Param	username		form 	string	true		"The username for signup"
 // @Param	password		form 	string	true		"The password for signup"
-// @Success 200 {object} models.ResponseInsertUser
+// @Success 200 { "status": 1, "message": "Success", "data": { "id_user": 4 } }
 // @router /add [post]
 func (this *UserController) Add() {
 
@@ -50,7 +50,7 @@ func (this *UserController) Add() {
 // @Param	offset			query 	int	false	offset""
 // @Param	limit			query 	int	false	"limit"
 // @Param	filter[status]			query 	int	false	"status"
-// @Success 200 {object} models.ResponseGetAllUser true  "body for user content"
+// @Success 200 { "status": 1, "message": "Success", "offset": 0, "limit": 25, "count": 2, "data": [ { "created_date": "2018-08-02 12:27:04", "status": "1", "updated_date": null, "username": "indrabeego" }, { "created_date": "2018-08-05 18:41:27", "status": "1", "updated_date": "2018-08-05 18:41:27", "username": "dewibeego" } ] } true  "body for user content"
 // @router /getall [get]
 func (this *UserController) GetAll() {
 	var filter models.UserFilter
@@ -99,7 +99,7 @@ func (this *UserController) GetAll() {
 // @Title Get
 // @Description get user by username
 // @Param	username		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.ResponseGetUser
+// @Success 200 { "status": 1, "message": "Success", "offset": 0, "limit": 0, "count": 1, "data": [ { "created_date": "2018-08-02 12:27:04", "status": "1", "updated_date": null, "username": "indrabeego" } ] }
 // @Failure 403 :username is empty
 // @router /get/:username [get]
 func (this *UserController) Get() {

@@ -6,6 +6,15 @@ import (
 )
 
 func init() {
+
+	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"],
+		beego.ControllerComments{
+			Method: "Post",
+			Router: `/`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"],
 		beego.ControllerComments{
 			Method: "GetAll",
