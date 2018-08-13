@@ -166,14 +166,13 @@ func (u *UserController) Delete() {
 
 // @Title Login
 // @Description Logs user into the system
-// @Param	username		form 	string	true		"The username for login"
-// @Param	password		form 	string	true		"The password for login"
+// @Param	username	form 	string	true		"The username for login"
+// @Param	password	form 	string	true		"The password for login"
 // @Success 200 { "message": "login success", "status": 1, "tokensting": "string" }
 // @Failure 403 { "message": "user not exist", "status": 0, "tokensting": "string" }
 // @Failure 401 Invalid method
 // @router /login [post]
 func (this *UserController) Login() {
-	if(this.Ctx.Input.IsPost() == true) {
 		var resLogin models.ResponseLogin
 		resLogin.Status = 0
 		username := this.Ctx.Request.PostForm.Get("username")
@@ -187,12 +186,6 @@ func (this *UserController) Login() {
 			resLogin.Message = "user not exist"
 		}
 		this.Data["json"] = resLogin
-	}else{
-		this.Ctx.Output.Status = 401
-		this.Data["json"] = "invalid method!"
-
-	}
-
 	this.ServeJSON()
 }
 
