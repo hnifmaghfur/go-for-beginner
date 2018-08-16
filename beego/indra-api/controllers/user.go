@@ -84,6 +84,8 @@ func (this *UserController) GetAll() {
 			resUserGetAll.Perpage = resUser.Perpage
 			resUserGetAll.Page = resUser.Page
 			resUserGetAll.Count = resUser.Count
+			resUserGetAll.Pages.First = resUser.Pagelist.First
+			resUserGetAll.Pages.Last = resUser.Pagelist.Last
 
 		}
 

@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 	"github.com/vjeantet/jodaTime"
+	"math"
 )
 
 
@@ -43,6 +44,7 @@ type ResponseUser struct {
 	Page int
 	Perpage int
 	Data []orm.Params
+	Pagelist PagesList
 }
 
 //struct for Response Get User
@@ -63,6 +65,14 @@ type ResponseGetAllUser struct {
 	Perpage int `json:"perpage"`
 	Count int `json:"count"`
 	Data  []orm.Params `json:"data"`
+	Pages PagesList `json:"pages"`
+}
+
+type PagesList struct{
+	First string
+	Prev []string
+	Next []string
+	Last string
 }
 
 type ResponseInsertUser struct {
@@ -121,6 +131,8 @@ func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) Respon
 	var limitOffset string
 	var resUser ResponseUser
 	whereCondition := ""
+	perpage_int,_ := strconv.Atoi(perpage.(string))
+	page_int,_ := strconv.Atoi(page.(string))
 
 	if(filter.Username != ""){
 		fUsername := " username LIKE '%"+filter.Username+"%'"
@@ -137,8 +149,7 @@ func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) Respon
 	}
 
 	if(page.(string) !="" && perpage.(string) !="") {
-		perpage_int,_ := strconv.Atoi(perpage.(string))
-		page_int,_ := strconv.Atoi(page.(string))
+
 		offset := (page_int-1) * perpage_int
 		limitOffset = " LIMIT " + strconv.Itoa(offset)+ "," + perpage.(string)
 		resUser.Page = page_int
@@ -150,8 +161,22 @@ func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) Respon
 	}
 
 	num,_ :=oRM.Raw("SELECT username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
+	totalNum,_ := oRM.QueryTable("users").Count()
 	resUser.Count = int(num)
 	resUser.Data = mapsUser
+
+	//List Pages LOGIC
+	prefix_url := "/v1/user/getall?"
+	if(num > 0){
+		first_page := prefix_url+"page=1&perpage="+strconv.Itoa(perpage_int)
+		page_end := int(math.Round(float64(totalNum)/float64(perpage_int)))
+		last_page := prefix_url+"page="+strconv.Itoa(page_end)+"&perpage="+strconv.Itoa(perpage_int)
+
+		resUser.Pagelist.First = first_page
+		resUser.Pagelist.Last = last_page
+
+	}
+
 	return resUser
 }
 
