@@ -222,15 +222,15 @@
                     },
                     {
                         "in": "query",
-                        "name": "offset",
-                        "description": "offset",
+                        "name": "page",
+                        "description": "page",
                         "type": "integer",
                         "format": "int64"
                     },
                     {
                         "in": "query",
-                        "name": "limit",
-                        "description": "limit",
+                        "name": "perpage",
+                        "description": "perpage",
                         "type": "integer",
                         "format": "int64"
                     },

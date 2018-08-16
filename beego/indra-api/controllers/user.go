@@ -47,8 +47,8 @@ func (this *UserController) Add() {
 // @Title GetAll
 // @Description get all Users
 // @Param	filter[username]		query 	string	false	"username"
-// @Param	offset			query 	int	false	offset""
-// @Param	limit			query 	int	false	"limit"
+// @Param	page			query 	int	false	page""
+// @Param	perpage			query 	int	false	"perpage"
 // @Param	filter[status]			query 	int	false	"status"
 // @Success 200 { "status": 1, "message": "Success", "offset": 0, "limit": 25, "count": 2, "data": [ { "created_date": "2018-08-02 12:27:04", "status": "1", "updated_date": null, "username": "indrabeego" }, { "created_date": "2018-08-05 18:41:27", "status": "1", "updated_date": "2018-08-05 18:41:27", "username": "dewibeego" } ] } true  "body for user content"
 // @router /getall [get]
@@ -60,8 +60,8 @@ func (this *UserController) GetAll() {
 	resUserGetAll.Message = "Data not found"
 	if(this.Ctx.Input.IsGet() == true) {
 
-		offset := this.GetString("offset")
-		limit := this.GetString("limit")
+		page := this.GetString("page")
+		perpage := this.GetString("perpage")
 		filter_status := this.GetString("filter[status]")
 		filter_username := this.GetString("filter[username]")
 
@@ -75,14 +75,14 @@ func (this *UserController) GetAll() {
 			filter.Username = filter_username
 		}
 
-		resUser := models.GetAllUsers(offset, limit, filter)
+		resUser := models.GetAllUsers(page, perpage, filter)
 
 		if (resUser.Count > 0) {
 			resUserGetAll.Status = 1
 			resUserGetAll.Message = "Success"
 			resUserGetAll.Data = resUser.Data
-			resUserGetAll.Limit = resUser.Limit
-			resUserGetAll.Offset = resUser.Offset
+			resUserGetAll.Perpage = resUser.Perpage
+			resUserGetAll.Page = resUser.Page
 			resUserGetAll.Count = resUser.Count
 
 		}
@@ -114,8 +114,8 @@ func (this *UserController) Get() {
 				resUserGetUser.Status = 1
 				resUserGetUser.Message = "Success"
 				resUserGetUser.Data = resUser.Data
-				resUserGetUser.Limit = resUser.Limit
-				resUserGetUser.Offset = resUser.Offset
+				resUserGetUser.Perpage = resUser.Perpage
+				resUserGetUser.Page = resUser.Page
 				resUserGetUser.Count = resUser.Count
 			}
 		}

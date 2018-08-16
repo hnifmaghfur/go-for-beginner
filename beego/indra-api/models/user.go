@@ -40,8 +40,8 @@ type ResponseLogin struct {
 
 type ResponseUser struct {
 	Count int
-	Offset int
-	Limit int
+	Page int
+	Perpage int
 	Data []orm.Params
 }
 
@@ -49,8 +49,8 @@ type ResponseUser struct {
 type ResponseGetUser struct {
 	Status int `json:"status"`
 	Message string `json:"message"`
-	Offset int `json:"offset"`
-	Limit int `json:"limit"`
+	Page int `json:"page"`
+	Perpage int `json:"perpage"`
 	Count int `json:"count"`
 	Data  []orm.Params `json:"data"`
 }
@@ -59,8 +59,8 @@ type ResponseGetUser struct {
 type ResponseGetAllUser struct {
 	Status int `json:"status"`
 	Message string `json:"message"`
-	Offset int `json:"offset"`
-	Limit int `json:"limit"`
+	Page int `json:"page"`
+	Perpage int `json:"perpage"`
 	Count int `json:"count"`
 	Data  []orm.Params `json:"data"`
 }
@@ -114,7 +114,7 @@ func GetUser(username string) ResponseUser {
 
 }
 
-func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) ResponseUser {
+func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) ResponseUser {
 	oRM := orm.NewOrm()
 	var mapsUser []orm.Params
 	var whereArr []string
@@ -136,16 +136,17 @@ func GetAllUsers(offset interface{},limit interface{}, filter UserFilter) Respon
 		whereCondition = "WHERE "+strings.Join(whereArr," AND ")
 	}
 
-	if(offset.(string) !="" && limit.(string) !="") {
-		limitOffset = " LIMIT " + offset.(string)+ "," + limit.(string)
-		offsetInt,_ := strconv.Atoi(offset.(string))
-		limitInt,_ := strconv.Atoi(limit.(string))
-		resUser.Offset = offsetInt
-		resUser.Limit = limitInt
+	if(page.(string) !="" && perpage.(string) !="") {
+		perpage_int,_ := strconv.Atoi(perpage.(string))
+		page_int,_ := strconv.Atoi(page.(string))
+		offset := (page_int-1) * perpage_int
+		limitOffset = " LIMIT " + strconv.Itoa(offset)+ "," + perpage.(string)
+		resUser.Page = page_int
+		resUser.Perpage = perpage_int
 	}else{
 		limitOffset = " LIMIT 0,25 "
-		resUser.Offset = 0
-		resUser.Limit = 25
+		resUser.Page = 0
+		resUser.Perpage = 25
 	}
 
 	num,_ :=oRM.Raw("SELECT username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)

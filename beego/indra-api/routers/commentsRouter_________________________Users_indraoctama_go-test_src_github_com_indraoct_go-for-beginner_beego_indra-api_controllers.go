@@ -6,10 +6,19 @@ import (
 )
 
 func init() {
+
+	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"],
+		beego.ControllerComments{
+			Method: "Post",
+			Router: `/`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:ObjectController"],
 		beego.ControllerComments{
 			Method: "GetAll",
-			Router: `/getall`,
+			Router: `/`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
@@ -34,6 +43,22 @@ func init() {
 		beego.ControllerComments{
 			Method: "Delete",
 			Router: `/:objectId`,
+			AllowHTTPMethods: []string{"delete"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "Put",
+			Router: `/:uid`,
+			AllowHTTPMethods: []string{"put"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "Delete",
+			Router: `/:uid`,
 			AllowHTTPMethods: []string{"delete"},
 			MethodParams: param.Make(),
 			Params: nil})
@@ -48,14 +73,6 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
 		beego.ControllerComments{
-			Method: "GetAll",
-			Router: `/`,
-			AllowHTTPMethods: []string{"post"},
-			MethodParams: param.Make(),
-			Params: nil})
-
-	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
-		beego.ControllerComments{
 			Method: "Get",
 			Router: `/get/:username`,
 			AllowHTTPMethods: []string{"get"},
@@ -64,17 +81,9 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
 		beego.ControllerComments{
-			Method: "Put",
-			Router: `/:uid`,
-			AllowHTTPMethods: []string{"put"},
-			MethodParams: param.Make(),
-			Params: nil})
-
-	beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/indraoct/go-for-beginner/beego/indra-api/controllers:UserController"],
-		beego.ControllerComments{
-			Method: "Delete",
-			Router: `/:uid`,
-			AllowHTTPMethods: []string{"delete"},
+			Method: "GetAll",
+			Router: `/getall`,
+			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
 
