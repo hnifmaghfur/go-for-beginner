@@ -69,10 +69,10 @@ type ResponseGetAllUser struct {
 }
 
 type PagesList struct{
-	First string
-	Prev []string
-	Next []string
-	Last string
+	First string `json:"first"`
+	Prev []string `json:"prev"`
+	Next []string `json:"next"`
+	Last string `json:"last"`
 }
 
 type ResponseInsertUser struct {
