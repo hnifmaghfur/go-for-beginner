@@ -3,13 +3,11 @@ package controllers
 import (
 	"github.com/indraoct/go-for-beginner/beego/indra-api/models"
 	"encoding/json"
-
-	"github.com/astaxie/beego"
 )
 
 // Operations about Users
 type UserController struct {
-	beego.Controller
+	BaseController
 }
 
 
