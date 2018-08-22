@@ -7,8 +7,6 @@ import (
 	"strconv"
 	"time"
 	"github.com/vjeantet/jodaTime"
-	"fmt"
-	"reflect"
 )
 
 
@@ -119,11 +117,15 @@ func GetUser(username string) ResponseUser {
 
 	if(num > 0) {
 		for _, mUser := range mapsUser {
-			users.Status,_ = mUser["Status"].(int)
+			users.Status = int(mUser["Status"].(int64))
 			users.Username = mUser["Username"].(string)
-			//users.UpdatedDate = mUser["UpdatedDate"].(string)
-			users.CreatedDate = mUser["CreatedDate"].(string)
-			users.Id,_ = mUser["Id"].(int)
+			if(mUser["UpdatedDate"] != nil) {
+				users.UpdatedDate = mUser["UpdatedDate"].(string)
+			}
+			if(mUser["CreatedDate"] != nil) {
+				users.CreatedDate = mUser["CreatedDate"].(string)
+			}
+			users.Id= int(mUser["Id"].(int64))
 			dataUser = append(dataUser,users)
 		}
 	}
@@ -174,12 +176,15 @@ func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) Respon
 
 	if(num > 0) {
 		for _, mUser := range mapsUser {
-			fmt.Println( reflect.TypeOf(mUser["Id"]))
-			users.Status,_ = mUser["Status"].(int)
+			users.Status = int(mUser["Status"].(int64))
 			users.Username = mUser["Username"].(string)
-			users.UpdatedDate = mUser["UpdatedDate"].(string)
-			users.CreatedDate = mUser["CreatedDate"].(string)
-			users.Id,_= mUser["Id"].(int)
+			if(mUser["UpdatedDate"] != nil) {
+				users.UpdatedDate = mUser["UpdatedDate"].(string)
+			}
+			if(mUser["CreatedDate"] != nil) {
+				users.CreatedDate = mUser["CreatedDate"].(string)
+			}
+			users.Id= int(mUser["Id"].(int64))
 			dataUser = append(dataUser,users)
 		}
 	}
