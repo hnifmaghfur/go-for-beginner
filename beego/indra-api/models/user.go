@@ -141,6 +141,8 @@ func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) Respon
 		condStatus = cond.AndCond(condUsername).And("status",filter.Status)
 	}
 
+	condAll := cond.AndCond(condUsername).AndCond(condStatus)
+
 	if(page.(string) !="" && perpage.(string) !="") {
 
 		offset = (page_int-1) * perpage_int
@@ -153,8 +155,8 @@ func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) Respon
 		resUser.Perpage = perpage_int
 	}
 
-	queryString.SetCond(condStatus).Limit(perpage_int).Offset(offset).Values(&mapsUser)
-	num, _ := queryString.SetCond(condStatus).Count()
+	queryString.SetCond(condAll).Limit(perpage_int).Offset(offset).Values(&mapsUser)
+	num, _ := queryString.SetCond(condAll).Count()
 	resUser.Count = int(num)
 	resUser.Data = mapsUser
 
