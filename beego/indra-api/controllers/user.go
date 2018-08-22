@@ -123,8 +123,6 @@ func (this *UserController) Get() {
 				resUserGetUser.Status = 1
 				resUserGetUser.Message = "Success"
 				resUserGetUser.Data = resUser.Data
-				resUserGetUser.Perpage = resUser.Perpage
-				resUserGetUser.Page = resUser.Page
 				resUserGetUser.Count = resUser.Count
 			}
 		}

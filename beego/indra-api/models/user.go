@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"time"
 	"github.com/vjeantet/jodaTime"
+	"fmt"
+	"reflect"
 )
 
 
@@ -41,17 +43,15 @@ type ResponseUser struct {
 	Count int
 	Page int
 	Perpage int
-	Data []orm.Params
+	Data []Users
 }
 
 //struct for Response Get User
 type ResponseGetUser struct {
 	Status int `json:"status"`
 	Message string `json:"message"`
-	Page int `json:"page"`
-	Perpage int `json:"perpage"`
 	Count int `json:"count"`
-	Data  []orm.Params `json:"data"`
+	Data  []Users `json:"data"`
 }
 
 //struct for Response Get All User
@@ -61,7 +61,7 @@ type ResponseGetAllUser struct {
 	Page int `json:"page"`
 	Perpage int `json:"perpage"`
 	Count int `json:"count"`
-	Data  []orm.Params `json:"data"`
+	Data  []Users `json:"data"`
 	Pages PagesList `json:"pages"`
 }
 
@@ -103,26 +103,39 @@ func AddUser(users Users) int64 {
 func GetUser(username string) ResponseUser {
 	oRM := orm.NewOrm()
 	var mapsUser []orm.Params
-
-	whereCondition := ""
-	limitOffset := " LIMIT 0,1 "
+	var users Users
+	var dataUser []Users
 	var resUser ResponseUser
+	var condAll *orm.Condition
+	queryString := oRM.QueryTable("users")
+	cond := orm.NewCondition()
 
 	if(username != ""){
-		fUsername := " username = '"+username+"'"
-		whereCondition = " WHERE "+fUsername
+		condAll = cond.And("username",username)
 	}
 
-	num,_ :=oRM.Raw("Select username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
-
+	num,_ :=queryString.SetCond(condAll).Limit(1).Offset(0).Values(&mapsUser)
 	resUser.Count = int(num)
-	resUser.Data = mapsUser
+
+	if(num > 0) {
+		for _, mUser := range mapsUser {
+			users.Status,_ = mUser["Status"].(int)
+			users.Username = mUser["Username"].(string)
+			//users.UpdatedDate = mUser["UpdatedDate"].(string)
+			users.CreatedDate = mUser["CreatedDate"].(string)
+			users.Id,_ = mUser["Id"].(int)
+			dataUser = append(dataUser,users)
+		}
+	}
+	resUser.Data = dataUser
 	return resUser
 
 }
 
 func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) ResponseUser {
 	oRM := orm.NewOrm()
+	var users Users
+	var dataUser []Users
 	var mapsUser []orm.Params
 	var resUser ResponseUser
 	var condUsername *orm.Condition
@@ -158,8 +171,19 @@ func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) Respon
 	queryString.SetCond(condAll).Limit(perpage_int).Offset(offset).Values(&mapsUser)
 	num, _ := queryString.SetCond(condAll).Count()
 	resUser.Count = int(num)
-	resUser.Data = mapsUser
 
+	if(num > 0) {
+		for _, mUser := range mapsUser {
+			fmt.Println( reflect.TypeOf(mUser["Id"]))
+			users.Status,_ = mUser["Status"].(int)
+			users.Username = mUser["Username"].(string)
+			users.UpdatedDate = mUser["UpdatedDate"].(string)
+			users.CreatedDate = mUser["CreatedDate"].(string)
+			users.Id,_= mUser["Id"].(int)
+			dataUser = append(dataUser,users)
+		}
+	}
+	resUser.Data = dataUser
 	return resUser
 }
 
