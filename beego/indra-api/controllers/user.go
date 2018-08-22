@@ -12,6 +12,43 @@ type UserController struct {
 	BaseController
 }
 
+//struct for Response Get User
+type ResponseGetUser struct {
+	Status int `json:"status"`
+	Message string `json:"message"`
+	Count int `json:"count"`
+	Data  []models.Users `json:"data"`
+}
+
+//struct for Response Get All User
+type ResponseGetAllUser struct {
+	Status int `json:"status"`
+	Message string `json:"message"`
+	Page int `json:"page"`
+	Perpage int `json:"perpage"`
+	Count int `json:"count"`
+	Data  []models.Users `json:"data"`
+	Pages PagesList `json:"pages"`
+}
+
+type PagesList struct{
+	First string `json:"first"`
+	Last string `json:"last"`
+}
+
+type ResponseInsertUser struct {
+	Status int `json:"status"`
+	Message string `json:"message"`
+	Data  struct{Id_user int64 `json:"id_user"`} `json:"data"`
+}
+
+//struct for Response Login
+type ResponseLogin struct {
+	Status int `json:"status"`
+	Message string `json:"message"`
+	Tokensting string `json:"tokensting"`
+}
+
 
 // @Title CreateUser
 // @Description create users
@@ -22,7 +59,7 @@ type UserController struct {
 func (this *UserController) Add() {
 
 	var users models.Users
-	var resInsert models.ResponseInsertUser
+	var resInsert ResponseInsertUser
 	resInsert.Status = 0
 	resInsert.Message = "failed to insert data user"
 
@@ -50,11 +87,11 @@ func (this *UserController) Add() {
 // @Param	page			query 	int	false	page""
 // @Param	perpage			query 	int	false	"perpage"
 // @Param	filter[status]			query 	int	false	"status"
-// @Success 200 { "status": 1, "message": "Success", "offset": 0, "limit": 25, "count": 2, "data": [ { "created_date": "2018-08-02 12:27:04", "status": "1", "updated_date": null, "username": "indrabeego" }, { "created_date": "2018-08-05 18:41:27", "status": "1", "updated_date": "2018-08-05 18:41:27", "username": "dewibeego" } ] } true  "body for user content"
+// @Success 200 {"status":1,"message":"Success","page":1,"perpage":2,"count":3,"data":[{"id":2,"username":"dewibeego","password":"","status":1,"created_date":"2018-08-05 18:41:27","updated_date":"2018-08-05 18:41:27"},{"id":7,"username":"dewibeego2","password":"","status":1,"created_date":"2018-08-06 17:58:16","updated_date":"2018-08-06 17:58:16"}],"pages":{"first":"http://indraapi.dev/v1/user/getall/?filter[status]=1&filter[username]=dewi&page=1&perpage=2","last":"http://indraapi.dev/v1/user/getall/?filter[status]=1&filter[username]=dewi&page=2&perpage=2"}} true  "body for user content"
 // @router /getall [get]
 func (this *UserController) GetAll() {
 	var filter models.UserFilter
-	var resUserGetAll models.ResponseGetAllUser
+	var resUserGetAll ResponseGetAllUser
 
 	resUserGetAll.Status = 0
 	resUserGetAll.Message = "Data not found"
@@ -87,9 +124,9 @@ func (this *UserController) GetAll() {
 
 			//List Pages LOGIC
 			prefix_url := "http://"+this.Ctx.Input.Host()+""+this.Ctx.Input.URL()
-			first_page := prefix_url+"/?page=1&perpage="+strconv.Itoa(resUser.Perpage)
+			first_page := prefix_url+"/?"+"filter[status]="+filter_status+"&filter[username]="+filter_username+"&page=1&perpage="+strconv.Itoa(resUser.Perpage)
 			page_end := int(math.Round(float64(resUser.Count)/float64(resUser.Perpage)))
-			last_page := prefix_url+"/?page="+strconv.Itoa(page_end)+"&perpage="+strconv.Itoa(resUser.Perpage)
+			last_page := prefix_url+"/?filter[status]="+filter_status+"&filter[username]="+filter_username+"&page="+strconv.Itoa(page_end)+"&perpage="+strconv.Itoa(resUser.Perpage)
 
 			resUserGetAll.Pages.First = first_page
 			resUserGetAll.Pages.Last = last_page
@@ -112,7 +149,7 @@ func (this *UserController) GetAll() {
 // @Failure 403 :username is empty
 // @router /get/:username [get]
 func (this *UserController) Get() {
-	var resUserGetUser models.ResponseGetUser
+	var resUserGetUser ResponseGetUser
 	resUserGetUser.Status = 0
 	resUserGetUser.Message = "Data not found"
 	if(this.Ctx.Input.IsGet() == true) {
@@ -180,7 +217,7 @@ func (u *UserController) Delete() {
 // @Failure 401 Invalid method
 // @router /login [post]
 func (this *UserController) Login() {
-		var resLogin models.ResponseLogin
+		var resLogin ResponseLogin
 		resLogin.Status = 0
 		username := this.Ctx.Request.PostForm.Get("username")
 		password := this.Ctx.Request.PostForm.Get("password")

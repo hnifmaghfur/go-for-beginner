@@ -244,7 +244,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{ \"status\": 1, \"message\": \"Success\", \"offset\": 0, \"limit\": 25, \"count\": 2, \"data\": [ { \"created_date\": \"2018-08-02 12:27:04\", \"status\": \"1\", \"updated_date\": null, \"username\": \"indrabeego\" }, { \"created_date\": \"2018-08-05 18:41:27\", \"status\": \"1\", \"updated_date\": \"2018-08-05 18:41:27\", \"username\": \"dewibeego\" } ] } true  \"body for user content\""
+                        "description": "{\"status\":1,\"message\":\"Success\",\"page\":1,\"perpage\":2,\"count\":3,\"data\":[{\"id\":2,\"username\":\"dewibeego\",\"password\":\"\",\"status\":1,\"created_date\":\"2018-08-05 18:41:27\",\"updated_date\":\"2018-08-05 18:41:27\"},{\"id\":7,\"username\":\"dewibeego2\",\"password\":\"\",\"status\":1,\"created_date\":\"2018-08-06 17:58:16\",\"updated_date\":\"2018-08-06 17:58:16\"}],\"pages\":{\"first\":\"http://indraapi.dev/v1/user/getall/?filter[status]=1\u0026filter[username]=dewi\u0026page=1\u0026perpage=2\",\"last\":\"http://indraapi.dev/v1/user/getall/?filter[status]=1\u0026filter[username]=dewi\u0026page=2\u0026perpage=2\"}} true  \"body for user content\""
                     }
                 }
             }

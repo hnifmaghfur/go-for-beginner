@@ -30,13 +30,6 @@ type UserFilter struct {
 }
 
 
-//struct for Response Login
-type ResponseLogin struct {
-	Status int `json:"status"`
-	Message string `json:"message"`
-	Tokensting string `json:"tokensting"`
-}
-
 type ResponseUser struct {
 	Count int
 	Page int
@@ -44,37 +37,7 @@ type ResponseUser struct {
 	Data []Users
 }
 
-//struct for Response Get User
-type ResponseGetUser struct {
-	Status int `json:"status"`
-	Message string `json:"message"`
-	Count int `json:"count"`
-	Data  []Users `json:"data"`
-}
 
-//struct for Response Get All User
-type ResponseGetAllUser struct {
-	Status int `json:"status"`
-	Message string `json:"message"`
-	Page int `json:"page"`
-	Perpage int `json:"perpage"`
-	Count int `json:"count"`
-	Data  []Users `json:"data"`
-	Pages PagesList `json:"pages"`
-}
-
-type PagesList struct{
-	First string `json:"first"`
-	Prev []string `json:"prev"`
-	Next []string `json:"next"`
-	Last string `json:"last"`
-}
-
-type ResponseInsertUser struct {
-	Status int `json:"status"`
-	Message string `json:"message"`
-	Data  struct{Id_user int64 `json:"id_user"`} `json:"data"`
-}
 
 func AddUser(users Users) int64 {
 	oRM := orm.NewOrm()
