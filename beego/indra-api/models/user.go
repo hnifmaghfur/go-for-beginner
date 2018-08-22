@@ -138,7 +138,7 @@ func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) Respon
 	}
 
 	if(filter.Status != ""){
-		condStatus = cond.AndCond(condUsername).And("status",filter.Status)
+		condStatus = cond.And("status",filter.Status)
 	}
 
 	condAll := cond.AndCond(condUsername).AndCond(condStatus)
