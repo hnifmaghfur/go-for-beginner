@@ -4,11 +4,9 @@ import (
 	"github.com/astaxie/beego/orm"
 	"crypto/md5"
 	"encoding/hex"
-	"strings"
 	"strconv"
 	"time"
 	"github.com/vjeantet/jodaTime"
-	"math"
 )
 
 
@@ -44,7 +42,6 @@ type ResponseUser struct {
 	Page int
 	Perpage int
 	Data []orm.Params
-	Pagelist PagesList
 }
 
 //struct for Response Get User
@@ -127,55 +124,39 @@ func GetUser(username string) ResponseUser {
 func GetAllUsers(page interface{},perpage interface{}, filter UserFilter) ResponseUser {
 	oRM := orm.NewOrm()
 	var mapsUser []orm.Params
-	var whereArr []string
-	var limitOffset string
 	var resUser ResponseUser
-	whereCondition := ""
+	var condUsername *orm.Condition
+	var condStatus *orm.Condition
+	var offset int
 	perpage_int,_ := strconv.Atoi(perpage.(string))
 	page_int,_ := strconv.Atoi(page.(string))
+	queryString := oRM.QueryTable("users")
+	cond := orm.NewCondition()
 
 	if(filter.Username != ""){
-		fUsername := " username LIKE '%"+filter.Username+"%'"
-		whereArr = append(whereArr,fUsername)
+		condUsername = cond.And("username__contains",filter.Username)
 	}
 
 	if(filter.Status != ""){
-		fStatus := " status ="+filter.Status.(string)
-		whereArr = append(whereArr,fStatus)
-	}
-
-	if(len(whereArr)>0){
-		whereCondition = "WHERE "+strings.Join(whereArr," AND ")
+		condStatus = cond.AndCond(condUsername).And("status",filter.Status)
 	}
 
 	if(page.(string) !="" && perpage.(string) !="") {
 
-		offset := (page_int-1) * perpage_int
-		limitOffset = " LIMIT " + strconv.Itoa(offset)+ "," + perpage.(string)
+		offset = (page_int-1) * perpage_int
 		resUser.Page = page_int
 		resUser.Perpage = perpage_int
 	}else{
-		limitOffset = " LIMIT 0,25 "
-		resUser.Page = 0
-		resUser.Perpage = 25
+		offset = 0
+		perpage_int = 25
+		resUser.Page = offset
+		resUser.Perpage = perpage_int
 	}
 
-	num,_ :=oRM.Raw("SELECT username, status, created_date, updated_date FROM users "+whereCondition +limitOffset).Values(&mapsUser)
-	totalNum,_ := oRM.QueryTable("users").Count()
+	queryString.SetCond(condStatus).Limit(perpage_int).Offset(offset).Values(&mapsUser)
+	num, _ := queryString.SetCond(condStatus).Count()
 	resUser.Count = int(num)
 	resUser.Data = mapsUser
-
-	//List Pages LOGIC
-	prefix_url := "/v1/user/getall?"
-	if(num > 0){
-		first_page := prefix_url+"page=1&perpage="+strconv.Itoa(perpage_int)
-		page_end := int(math.Round(float64(totalNum)/float64(perpage_int)))
-		last_page := prefix_url+"page="+strconv.Itoa(page_end)+"&perpage="+strconv.Itoa(perpage_int)
-
-		resUser.Pagelist.First = first_page
-		resUser.Pagelist.Last = last_page
-
-	}
 
 	return resUser
 }

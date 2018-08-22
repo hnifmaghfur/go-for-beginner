@@ -3,6 +3,8 @@ package controllers
 import (
 	"github.com/indraoct/go-for-beginner/beego/indra-api/models"
 	"encoding/json"
+	"strconv"
+	"math"
 )
 
 // Operations about Users
@@ -82,8 +84,15 @@ func (this *UserController) GetAll() {
 			resUserGetAll.Perpage = resUser.Perpage
 			resUserGetAll.Page = resUser.Page
 			resUserGetAll.Count = resUser.Count
-			resUserGetAll.Pages.First = resUser.Pagelist.First
-			resUserGetAll.Pages.Last = resUser.Pagelist.Last
+
+			//List Pages LOGIC
+			prefix_url := "http://"+this.Ctx.Input.Host()+""+this.Ctx.Input.URL()
+			first_page := prefix_url+"/?page=1&perpage="+strconv.Itoa(resUser.Perpage)
+			page_end := int(math.Round(float64(resUser.Count)/float64(resUser.Perpage)))
+			last_page := prefix_url+"/?page="+strconv.Itoa(page_end)+"&perpage="+strconv.Itoa(resUser.Perpage)
+
+			resUserGetAll.Pages.First = first_page
+			resUserGetAll.Pages.Last = last_page
 
 		}
 

@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"bytes"
+	"github.com/astaxie/beego/orm"
 )
 
 type BaseController struct {
@@ -12,13 +12,7 @@ type BaseController struct {
 func (this BaseController) Prepare (){
 
 	if beego.BConfig.RunMode == "dev" {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(this.Ctx.Request.Body)
-		newStr := buf.String()
-
-		beego.Debug(this.Ctx.Request.Header)
-		beego.Debug(this.Ctx.Request.Body)
-		beego.Debug(newStr)
+		orm.Debug = true
 	}
 
 }
