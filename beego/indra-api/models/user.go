@@ -166,8 +166,10 @@ func Login(username, password string) bool {
 	password_md5 := hex.EncodeToString(hasher.Sum(nil))
 
 	oRM := orm.NewOrm()
-	var maps []orm.Params
-	num, err := oRM.Raw("SELECT username, password FROM users WHERE username = ? AND password = ? LIMIT 1", username,password_md5).Values(&maps)
+	queryString := oRM.QueryTable("users")
+	cond := orm.NewCondition()
+
+	num,err := queryString.SetCond(cond.And("username",username).And("password",password_md5)).Count()
 
 	if(num > 0 && err == nil){
 		return true
