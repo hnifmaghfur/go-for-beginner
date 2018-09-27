@@ -48,6 +48,8 @@ func main(){
 
 	loginuser(usr)
 
+	generateCustomerSign()
+
 }
 
 func createuser(usr User){
@@ -59,6 +61,17 @@ func createuser(usr User){
 	fmt.Println(usr.Password)
 
 }
+
+func generateCustomerSign(){
+	appId := "TOKOPEDIA"
+	timeStamp := "2017-12-01 00:00:00"
+	SecretKey := "5affc2f9494cd32b0da015dc3ddccc0ba62a9486"
+	sign := security.ShaOneEncrypt(security.Md5Encrypt(appId + timeStamp + SecretKey))
+
+	fmt.Println("---- Generate Customer Signature ----")
+	fmt.Println(sign)
+}
+
 
 func loginuser(usr User){
 

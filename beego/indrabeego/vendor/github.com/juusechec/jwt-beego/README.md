@@ -15,7 +15,7 @@ Pasos para implementar:
 2) Generar una ruta con action POST en el controlador especificado, en este caso la ruta elegida fue /user/getToken:
 
 ```go
-// ./controllers/user.go
+positive_user.go
 package controllers
 
 import (

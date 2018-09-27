@@ -13,7 +13,7 @@ Steps to implement:
 2) Generate a REST "path"/route with POST action in specific controller to return token, in this case the route was /user/getToken:
 
 ```go
-// ./controllers/user.go
+positive_user.go
 package controllers
 
 import (
