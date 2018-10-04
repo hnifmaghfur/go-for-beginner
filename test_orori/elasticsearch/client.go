@@ -14,7 +14,7 @@ type tweet struct {
 	Message  string        `json:"message"`
 	Retweets int           `json:"retweets"`
 	Image    string        `json:"image,omitempty"`
-	Created  time.Time     `json:"created,omitempty"`
+	Created  string     `json:"created,omitempty"`
 	Tags     []string      `json:"tags,omitempty"`
 	Location string        `json:"location,omitempty"`
 }
@@ -104,11 +104,11 @@ func insertData(client *elastic.Client,index string){
 
 	// Index a tweet (using JSON serialization)
 	ctx := context.Background()
-	tweet1 := tweet{User: "dewi96", Message: "Take Matamu", Retweets: 0}
+	tweet1 := tweet{User: "indra96", Message: "Take Matamu", Retweets: 0, Created:time.Now().Format(time.RFC3339)}
 	put1, err := client.Index().
 		Index(index).
 		Type("tweet").
-		Id("2").
+		Id("1").
 		BodyJson(tweet1).
 		Do(ctx)
 	if err != nil {
