@@ -1,10 +1,10 @@
 package main
 
-import "time"
-import "github.com/indraoct/go-for-beginner/test_orori/security"
 import (
-	"github.com/indraoct/go-for-beginner/test_orori/helper"
 	"fmt"
+	"time"
+ 	"github.com/indroct/go-for-beginner/test_orori/helper"
+ 	"github.com/indroct/go-for-beginner/test_orori/security"
 )
 
 type OauthClient struct {
