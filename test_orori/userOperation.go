@@ -41,14 +41,14 @@ type User struct{
 func main(){
 
 	var usr User
-	usr.Username = "omyank20071@gmail.com"
-	usr.Password = "123456"
+	usr.Username = "aurora.gultom@orori.com"
+	usr.Password = "aurora1234"
 
-	createuser(usr)
+	createuserOropay(usr)
 
-	loginuser(usr)
+	//loginuser(usr)
 
-	generateCustomerSign()
+	//generateCustomerSign()
 
 }
 
@@ -60,6 +60,28 @@ func createuser(usr User){
 	fmt.Println(usr.Salt)
 	fmt.Println(usr.Password)
 
+}
+
+func createuserOropay(usr User){
+	fmt.Println(usr.Password)
+	Salt := security.ShaOneEncrypt(helper.GetNowTime().String() + helper.StringRandomWithCharset(32, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"))
+	usr.Password = security.ShaOneEncrypt("aurora1234" + Salt)
+	
+	fmt.Println("-------CREATE USER OROPAY--------")
+	fmt.Println("SALT ",Salt)
+	fmt.Println("PASS ",usr.Password)
+	
+	pass := security.ShaOneEncrypt("aurora1234" + Salt)
+	
+	if pass == usr.Password{
+		fmt.Println("LOGIN SUCCESS")
+	}else{
+		fmt.Println("FAILED LOGIN")
+	}
+	
+	fmt.Println("pass: ",pass)
+	fmt.Println("validate: ",usr.Password)
+	
 }
 
 func generateCustomerSign(){
