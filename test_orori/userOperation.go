@@ -65,13 +65,13 @@ func createuser(usr User){
 func createuserOropay(usr User){
 	fmt.Println(usr.Password)
 	Salt := security.ShaOneEncrypt(helper.GetNowTime().String() + helper.StringRandomWithCharset(32, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"))
-	usr.Password = security.ShaOneEncrypt("aurora1234" + Salt)
+	usr.Password = security.ShaOneEncrypt("123456" + Salt)
 	
 	fmt.Println("-------CREATE USER OROPAY--------")
 	fmt.Println("SALT ",Salt)
 	fmt.Println("PASS ",usr.Password)
 	
-	pass := security.ShaOneEncrypt("aurora1234" + Salt)
+	pass := security.ShaOneEncrypt("123456" + Salt)
 	
 	if pass == usr.Password{
 		fmt.Println("LOGIN SUCCESS")
