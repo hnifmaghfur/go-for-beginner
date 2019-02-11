@@ -14,7 +14,7 @@ func main(){
 		log.Fatal(err)
 	}
 	
-	f, err := os.Open("pdf/file/template_email/layout.html")
+	f, err := os.Open("file/template_email/layout.html")
 	if f != nil {
 		defer f.Close()
 	}
