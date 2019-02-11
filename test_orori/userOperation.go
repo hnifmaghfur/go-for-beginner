@@ -41,8 +41,8 @@ type User struct{
 func main(){
 
 	var usr User
-	usr.Username = "aurora.gultom@orori.com"
-	usr.Password = "aurora1234"
+	usr.Username = "ihsan@orori.com"
+	usr.Password = "123456"
 
 	createuserOropay(usr)
 
