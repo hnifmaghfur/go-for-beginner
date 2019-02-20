@@ -14,7 +14,7 @@ func main(){
 		log.Fatal(err)
 	}
 	
-	f, err := os.Open("file/template_email/layout.html")
+	f, err := os.Open("file/template_email/invoice2.html")
 	if f != nil {
 		defer f.Close()
 	}
@@ -25,7 +25,9 @@ func main(){
 	pdfg.AddPage(wkhtmltopdf.NewPageReader(f))
 	
 	pdfg.Orientation.Set(wkhtmltopdf.OrientationPortrait)
-	pdfg.Dpi.Set(300)
+	pdfg.Dpi.Set(80)
+	pdfg.MarginLeft.Set(0)
+	pdfg.MarginRight.Set(0)
 	
 	err = pdfg.Create()
 	if err != nil {
