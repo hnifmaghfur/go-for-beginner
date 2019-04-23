@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha512"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"crypto/hmac"
 	"fmt"
@@ -41,6 +42,13 @@ func Sha256_HMAC(k string, message string) (string) {
 	hmac := fmt.Sprintf(hex.EncodeToString(sig.Sum(nil)))
 
 	return hmac
+}
+
+func ComputeHmac256(message string, secret string) string {
+	key := []byte(secret)
+	h := hmac.New(sha256.New, key)
+	h.Write([]byte(message))
+	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
 func Sha1_HMAC(k string, message string) (string) {
