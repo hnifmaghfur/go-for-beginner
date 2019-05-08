@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"github.com/indroct/go-for-beginner/test_orori/helper"
 	"log"
-	"github.com/streadway/amqp")
+	"github.com/streadway/amqp"
+	"strconv"
+)
 
 func failOnError(err error, msg string) {
 	if err != nil {
@@ -28,7 +30,8 @@ type PartnersLog struct{
 func main(){
 	var logElastic PartnersLog
 	
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	conn, err := amqp.Dial("amqp://devel:devel@178.128.23.219:5672/")
+	//conn, err := amqp.Dial("amqp://emas:s3cr3t@13.251.127.154:5672/")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 	
@@ -37,7 +40,7 @@ func main(){
 	defer ch.Close()
 	
 	q, err := ch.QueueDeclare(
-		"Log Partner", // name
+		"EMAS_LOG", // name
 		false,   // durable
 		false,   // delete when unused
 		false,   // exclusive
@@ -56,18 +59,21 @@ func main(){
 	
 	body,_ :=json.Marshal(logElastic)
 	
-	err = ch.Publish(
-		"",     // exchange
-		q.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
-		amqp.Publishing {
-			ContentType: "text/json",
-			Body:        body,
-			Priority: uint8(1),
-			MessageId:"Hai",
-			Timestamp:helper.GetNowTime(),
-		})
-	failOnError(err, "Failed to publish a message")
+	for i:= 0 ; i<200 ;i++ {
+		err = ch.Publish(
+			"",     // exchange
+			q.Name, // routing key
+			false,  // mandatory
+			false,  // immediate
+			amqp.Publishing{
+				ContentType: "text/json",
+				Body:        body,
+				Priority:    uint8(1),
+				MessageId:   strconv.Itoa(i),
+				Timestamp:   helper.GetNowTime(),
+				ReplyTo:"premiro_log",
+			})
+		failOnError(err, "Failed to publish a message")
+	}
 }
 
