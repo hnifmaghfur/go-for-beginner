@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      color: #2d2d2d;
+      font-family: 'roboto';
+    }
+
+    header {
+      height: 90px;
+      background-color: aquamarine;
+      padding-top: 35px;
+      background-image: url(https://orori-telin.akamaized.net/assets.orori.com/indonesia/img/e-mas/new/background.jpg)
+    }
+
+    header .container {
+      display: flex;
+      width: 80%;
+      margin: auto;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header .logo img{
+      height: 40px;
+    }
+    header .right-header {
+      float: right;
+      margin-right: 20px;
+    }
+    header .right-header h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+    header .right-header span {
+      /* font-size: 1.1em; */
+    }
+
+    section.address {
+      width: 80%;
+      margin: auto;
+    }
+
+    .address .container {
+      /* background-color: aquamarine; */
+      border: 2px solid #a69f75;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      padding: 20px;
+    }
+    .address .container .name {
+      flex: 1;
+      padding-left: 20px;
+    }
+    .address .container .name h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+    .address .container .name p {
+      font-size: 1em;
+      padding-top: 5px;
+      margin: 0;
+    }
+    .address .container .divider-vertical {
+      flex: 0;
+      border-right: 1px solid #a69f75;
+      min-height: 100px;
+    }
+    .address .container .summary {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0px 20px;
+    }
+    .address .container .summary .summary-data {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 0px 20px;
+    }
+    .summary-data{
+      padding: 0px 20px;
+    }
+    .address .container .summary .summary-data .title {
+      flex: 1;
+    }
+    .address .container .summary .summary-data .separation {
+      flex: 0.1;
+    }
+    .address .container .summary .summary-data .value {
+      flex: 1;
+    }
+
+    .address .toc {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .address .toc p {
+      font-size: 0.9em;
+    }
+
+    .detail-transaction {
+      width: 80%;
+      margin: auto;
+    }
+
+    /* tablehead */
+    .detail-transaction .table-head {
+      width: 100%;
+      border: 0px;
+      border-radius: 10px;
+      background-color: #a9934a;
+    }
+    .table-head thead{
+      color: white;
+      font-weight: 400;
+    }
+    .table-head thead tr {
+      height: 40px;
+    }
+    .table-head thead td {
+      border-right: 1px solid white;
+      /* padding: 0px 30px; */
+      text-align: center;
+    }
+    .table-head thead td.colspan {
+      border-bottom: 1px solid white;
+    }
+    .table-head thead td.end {
+      border-right: none;
+    }
+    .table-head thead td.detail {
+      width: 200px;
+    }
+
+    .detail-transaction .table-body {
+      width: 100%;
+      color: #999999;
+    }
+    .table-body tbody td {
+      text-align: center;
+    }
+    .table-body tbody td.detail {
+      width: 200px;
+      text-align: start;
+      padding: 10px 20px;
+    }
+    .table-body tbody td.end {
+      /* width: 200px; */
+      text-align: end;
+      padding-right: 20px;
+    }
+
+    .head-title {
+      display: flex;
+      width: 95%;
+      padding: 20px 20px;
+      justify-content: space-between;
+    }
+
+    section.summary, table.summary {
+      width: 80%;
+      margin: auto;
+      display: flex;
+      border: 1px solid #b8b094;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    section.summary .container,table.summary .container {
+      flex: 1;
+      text-align: center;
+      border-right: 1px solid #b8b094;
+    }
+    section.summary .end,table.summary .end {
+      border-right: none;
+    }
+    section.summary .container .title,table.summary .container .title{
+      background-color: #ebe4d2;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    section.summary .container .value,table.summary .container .value{
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    section.summary,table.summary {
+      width: 80%;
+      margin: auto;
+      display: flex;
+      border: 1px solid #b8b094;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    section.summary .container,table.summary .container {
+      flex: 1;
+      text-align: center;
+      border-right: 1px solid #b8b094;
+    }
+    section.summary .end,section.summary .end {
+      border-right: none;
+    }
+    section.summary .container .title,table.summary .container .title{
+      background-color: #ebe4d2;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    section.summary .container .value,table.summary .container .value{
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    section.footer {
+      width: 80%;
+      margin: auto;
+    }
+    section.footer .toc p {
+      font-size: 0.9em;
+      margin: 0;
+      color: #999999;
+    }
+    section.footer .contact {
+      padding: 40px 0;
+    }
+    section.footer .contact p {
+      font-size: 0.9em;
+      margin: 0;
+      color: #999999;
+      text-align: center;
+    }
+
+    p.text-normal {
+      font-size: 1.1em;
+      padding-top: 5px;
+      margin: 0;
+    }
+    p.text-small {
+      font-size: 1em;
+      padding-top: 5px;
+      margin: 0;
+    }
+  </style>
+  <title>Document</title>
+</head>
+<body>
+<header>
+  <table class="container">
+    <tr>
+      <td class="logo">
+        <img src="https://orori-telin.akamaized.net/assets.orori.com/indonesia/img/e-mas/logo.png" />
+      </td>
+      <td class="right-header">
+        <h1>e-statement</h1>
+        <p class="text-normal">Ringkasan laporan bulanan e-mas</p>
+      </td>
+    </tr>
+  </table>
+</header>
+<section class="address">
+  <table width="100%" class="container">
+    <tr>
+      <td class="name">
+        <h1>{{.CustomerName}}</h1>
+        <p class="text-normal">{{.CustomerPhone}}</p>
+        <p class="text-normal">{{.CustomerEmail}}</p>
+      </td>
+      <td class="divider-vertical">&nbsp;</td>
+      <td>
+        <table>
+          <tr>
+            <td class="summary-data">
+              <p class="text-normal">Periode Laporan</p>
+
+            </td>
+            <td class=" summary-data">
+              <p class="text-normal">:</p>
+            </td>
+
+            <td class=" summary-data">
+              <p class="text-normal">{{.PeriodeLaporan}}</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="summary-data">
+              <p class="text-normal">Total Emas</p>
+
+            </td>
+            <td class=" summary-data">
+              <p class="text-normal">:</p>
+            </td>
+
+            <td class=" summary-data">
+              <p class="text-normal">{{.TotalEmas}}</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="summary-data">
+              <p class="text-normal">Perkiraan Nilai Emas*</p>
+
+            </td>
+            <td class=" summary-data">
+              <p class="text-normal">:</p>
+            </td>
+
+            <td class=" summary-data">
+              <p class="text-normal">{{.PerkiraanNilaiEmas}}</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="summary-data">
+              <p class="text-normal">Harga emas/gram*</p>
+
+            </td>
+            <td class=" summary-data">
+              <p class="text-normal">:</p>
+            </td>
+
+            <td class=" summary-data">
+              <p class="text-normal">{{.GoldPricePerGram}}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <div class="toc">
+    <p style="float: right;">*update harga emas per {{.DateNow}}, pukul {{.TimeNow}} WIB</p>
+  </div>
+</section>
+<br><br>
+<section class="detail-transaction">
+  <h2 class="heading">
+    RINCIAN TRANSAKSI
+  </h2>
+  <div>
+    <table class="table-head">
+      <thead>
+      <tr>
+        <td width="10%" rowspan="2">Tanggal</td>
+        <td width="20%" rowspan="2" class="detail">Keterangan</td>
+        <td width="20%" colspan="2" class="colspan">Harga emas (Rp)</td>
+        <td width="20%" colspan="2" class="colspan">Nilai transaksi</td>
+        <td width="20%" rowspan="2" class="end">Jumlah Saldo (gram)</td>
+      </tr>
+      <tr>
+        <td>Jual</td>
+        <td>Beli</td>
+        <td>Rupiah</td>
+        <td>Gram</td>
+      </tr>
+      </thead>
+    </table>
+    <table class="head-title">
+      <tr>
+        <td><h2>Saldo Sebelumnya</h2></td>
+        <td><h2 style="float: right;">{{.SaldoAwal}}</h2></td>
+      </tr>
+    </table>
+    <table class="table-body">
+      <tbody>
+      {{.HTMLDataList}}
+      <!--
+        <tr>
+          <td width="10%">13/04/19</td>
+          <td width="30%" class="detail" >
+            <p class="text-small">Pembelian emas -</p>
+            <p class="text-small">emas 0.91231231 gram</p>
+          </td>
+          <td width="10%">617.836</td>
+          <td width="10%">617.836</td>
+          <td width="10%">617.836</td>
+          <td width="10%">617.836</td>
+          <td width="20%" class="end">617.836</td>
+        </tr>
+        -->
+      </tbody>
+    </table>
+    <table class="head-title">
+      <tr>
+        <td><h2>Saldo Akhir</h2></td>
+        <td><h2 style="float: right;">{{.SaldoAkhir}}</h2></td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<table class="summary">
+  <tr class="container">
+    <td class="title">
+      <h3>Saldo Awal</h3>
+    </td>
+    <td class="title">
+      <h3>Total Mutasi Debit</h3>
+    </td>
+    <td class="title">
+      <h3>Total Mutasi Kredit</h3>
+    </td>
+    <td class="title">
+      <h3>Saldo Akhir</h3>
+    </td>
+  </tr>
+  <tr class="container">
+    <td class="value">
+      <div>{{.SaldoAwal}} Gram</div>
+    </td>
+    <td class="value">
+      <div>{{.MutasiDebit}} Gram</div>
+    </td>
+    <td class="value">
+      <div>{{.MutasiCredit}} Gram</div>
+    </td>
+    <td class="value">
+      <div>{{.SaldoAkhir}} Gram</div>
+    </td>
+  </tr>
+</table>
+
+<table class="summary">
+  <tr class="container">
+    <td class="title">
+      <h3>Harga Beli*</h3>
+    </td>
+    <td class="title">
+      <h3>Harga Jual</h3>
+    </td>
+    <td class="title">
+      <h3>Nilai awal Saldo emas**</h3>
+    </td>
+    <td class="title">
+      <h3>Nilai akhir Saldo emas**</h3>
+    </td>
+  </tr>
+  <tr class="container">
+    <td class="value">
+      <div>Rp{{.HargaBeli}},-</div>
+    </td>
+    <td class="value">
+      <div>Rp{{.HargaJual}},-</div>
+    </td>
+    <td class="value">
+      <div>Rp{{.NilaiAwal}},-</div>
+    </td>
+    <td class="value">
+      <div>Rp{{.NilaiAkhir}},-</div>
+    </td>
+  </tr>
+</table>
+
+
+<section class="footer">
+  <div class="toc">
+    <p>*update harga emas per {{.DateNow}}, pukul {{.TimeNow}} WIB</p>
+    <p>** Berdasarkan harga jual</p>
+  </div>
+  <div class="contact">
+    <p>untuk bantuan lebih lanjut, Hubungi e-mas melalui nomor telepon (021) 3500 452, atau email ke info@e-mas.com</p>
+  </div>
+</section>
+</body>
+</html>

@@ -14,7 +14,7 @@ func main(){
 		log.Fatal(err)
 	}
 	
-	f, err := os.Open("file/template_email/invoice2.html")
+	f, err := os.Open("file/template_email/transaction_history.html")
 	if f != nil {
 		defer f.Close()
 	}
@@ -34,7 +34,7 @@ func main(){
 		log.Fatal(err)
 	}
 	
-	err = pdfg.WriteFile("./output.pdf")
+	err = pdfg.WriteFile("./transaction_history.pdf")
 	if err != nil {
 		log.Fatal(err)
 	}
