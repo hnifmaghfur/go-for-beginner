@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/olivere/elastic"
 	"context"
-	"time"
-	"os"
-	"log"
 	"fmt"
+	"github.com/olivere/elastic"
+	"log"
+	"os"
+	"time"
 )
 
 type tweet struct {
@@ -34,13 +34,49 @@ func main() {
 		panic(err)
 	}
 	//create twitter index
-	rs,err :=createTwitterIndex(client,"twitter")
-	if(err != nil){
-		fmt.Println("ERROR: ",err.Error())
-	}
-	fmt.Println("RESPONSE: ",rs)
+	//rs,err :=createTwitterIndex(client,"twitter")
+	//if(err != nil){
+	//	fmt.Println("ERROR: ",err.Error())
+	//}
+	//fmt.Println("RESPONSE: ",rs)
 
-	insertData(client,"twitter")
+	//insertData(client,"twitter")
+	
+	ctx := context.Background()
+	get1, err := client.Get().
+		Index("oropay_premiro_log-2019-04-24").
+		Type("logs").
+		Id("RbPQTmoBIrHrMd6-1Q-5").
+		Do(ctx)
+	
+	if err != nil{
+		panic(err)
+	}
+	
+	rawdata,_ := get1.Source.MarshalJSON()
+	
+	if get1.Found{
+		fmt.Printf(string(rawdata))
+	}
+	
+	
+	//search
+	termQuery := elastic.NewTermQuery("request_body", "Halo")
+	searchResult, err := client.Search().
+		Index("oropay_premiro_log-2019-04-24").   // search in index "twitter"
+		Query(termQuery).   // specify the query
+		Sort("request_body", false). // sort by "user" field, ascending
+		From(0).Size(9).   // take documents 0-9
+		Pretty(true).       // pretty print request and response JSON
+		Do(ctx)             // execute
+		
+	if err != nil {
+		// Handle error
+		panic(err)
+	}
+	
+	fmt.Printf("Query took %d milliseconds\n", searchResult.TookInMillis)
+	
 
 }
 
@@ -118,3 +154,4 @@ func insertData(client *elastic.Client,index string){
 	fmt.Printf("Indexed tweet %s to index %s, type %s\n", put1.Id, put1.Index, put1.Type)
 
 }
+
