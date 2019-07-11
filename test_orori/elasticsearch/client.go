@@ -14,7 +14,7 @@ type tweet struct {
 	Message  string        `json:"message"`
 	Retweets int           `json:"retweets"`
 	Image    string        `json:"image,omitempty"`
-	Created  string     `json:"created,omitempty"`
+	Created  string        `json:"created,omitempty"`
 	Tags     []string      `json:"tags,omitempty"`
 	Location string        `json:"location,omitempty"`
 }
@@ -34,45 +34,44 @@ func main() {
 		panic(err)
 	}
 	//create twitter index
-	//rs,err :=createTwitterIndex(client,"twitter")
-	//if(err != nil){
-	//	fmt.Println("ERROR: ",err.Error())
-	//}
-	//fmt.Println("RESPONSE: ",rs)
-
-	//insertData(client,"twitter")
+	rs,err :=createMustangIndex(client,"mustang")
+	if(err != nil){
+		fmt.Println("ERROR: ",err.Error())
+	}
+	fmt.Println("RESPONSE: ",rs)
+	
+	insertData(client,"mustang")
 	
 	ctx := context.Background()
-	get1, err := client.Get().
-		Index("oropay_premiro_log-2019-04-24").
-		Type("logs").
-		Id("RbPQTmoBIrHrMd6-1Q-5").
-		Do(ctx)
+	//get1, err := client.Get().
+	//	Index("twitter").
+	//	Id("1").
+	//	Do(ctx)
+	//
+	//if err != nil{
+	//	fmt.Println(err.Error())
+	//}
+	//
+	//rawdata,_ := get1.Source.MarshalJSON()
+	//
+	//if get1.Found{
+	//	fmt.Printf(string(rawdata))
+	//}
 	
-	if err != nil{
-		panic(err)
-	}
 	
-	rawdata,_ := get1.Source.MarshalJSON()
-	
-	if get1.Found{
-		fmt.Printf(string(rawdata))
-	}
-	
-	
-	//search
-	termQuery := elastic.NewTermQuery("request_body", "Halo")
+	////search
+	termQuery := elastic.NewTermQuery("user", "indra96")
 	searchResult, err := client.Search().
-		Index("oropay_premiro_log-2019-04-24").   // search in index "twitter"
+		Index("mustang").   // search in index "twitter"
 		Query(termQuery).   // specify the query
-		Sort("request_body", false). // sort by "user" field, ascending
+		Sort("user", true). // sort by "user" field, ascending
 		From(0).Size(9).   // take documents 0-9
 		Pretty(true).       // pretty print request and response JSON
 		Do(ctx)             // execute
-		
+	
 	if err != nil {
 		// Handle error
-		panic(err)
+		fmt.Println(err.Error())
 	}
 	
 	fmt.Printf("Query took %d milliseconds\n", searchResult.TookInMillis)
@@ -80,9 +79,9 @@ func main() {
 
 }
 
-func createTwitterIndex(client *elastic.Client,index string)(rs string, err error){
+func createMustangIndex(client *elastic.Client,index string)(rs string, err error){
 
-	if(isExistIndexTwitter(client,index) == false) {
+	if(isExistIndexMustang(client,index) == false) {
 		// Create a new index.
 		mapping := `{
 			"settings":{
@@ -92,8 +91,22 @@ func createTwitterIndex(client *elastic.Client,index string)(rs string, err erro
 			"mappings":{
 				"tweet":{
 					"properties":{
+						"user":{
+							"type":"keyword"
+						},
+						"message":{
+							"type":"text",
+							"store": true,
+							"fielddata": true
+						},
+						"image":{
+							"type":"keyword"
+						},
+						"created":{
+							"type":"date"
+						},
 						"tags":{
-							"type":"text"
+							"type":"keyword"
 						},
 						"location":{
 							"type":"geo_point"
@@ -106,7 +119,7 @@ func createTwitterIndex(client *elastic.Client,index string)(rs string, err erro
 			}
 		}`
 		ctx := context.Background()
-		createIndex, err := client.CreateIndex("twitter").BodyString(mapping).Do(ctx)
+		createIndex, err := client.CreateIndex("mustang").BodyString(mapping).Do(ctx)
 		if err != nil {
 			// Handle error
 			return "Not OK",err
@@ -121,7 +134,7 @@ func createTwitterIndex(client *elastic.Client,index string)(rs string, err erro
 	return "OK",nil
 }
 
-func isExistIndexTwitter(client *elastic.Client,index string) (b bool){
+func isExistIndexMustang(client *elastic.Client,index string) (b bool){
 	// Check if the index called "twitter" exists
 	exists, err := client.IndexExists(index).Do(context.Background())
 	if err != nil {
@@ -144,7 +157,7 @@ func insertData(client *elastic.Client,index string){
 	put1, err := client.Index().
 		Index(index).
 		Type("tweet").
-		Id("1").
+		Id("2").
 		BodyJson(tweet1).
 		Do(ctx)
 	if err != nil {
