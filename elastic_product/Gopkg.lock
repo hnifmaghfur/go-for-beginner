@@ -45,6 +45,14 @@
   version = "v4.20"
 
 [[projects]]
+  digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
+
+[[projects]]
   branch = "master"
   digest = "1:44fbfce27cb96b7d20217634af466093485a3e8132820acbe95949cb64e7fc60"
   name = "github.com/shiena/ansicolor"
@@ -111,6 +119,7 @@
     "github.com/astaxie/beego/context/param",
     "github.com/astaxie/beego/orm",
     "github.com/go-sql-driver/mysql",
+    "github.com/pkg/errors",
     "github.com/smartystreets/goconvey/convey",
   ]
   solver-name = "gps-cdcl"
