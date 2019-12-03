@@ -29,9 +29,9 @@ func Sha256Encrypt(s string) (string) {
 func Sha512Encrypt(s string) (string) {
 	h := sha512.New()
 	h.Write([]byte(s))
-	sha1_hash := hex.EncodeToString(h.Sum(nil))
-
-	return sha1_hash
+	sha512_hash := hex.EncodeToString(h.Sum(nil))
+	
+	return sha512_hash
 }
 
 func Sha256_HMAC(k string, message string) (string) {

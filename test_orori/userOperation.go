@@ -41,14 +41,18 @@ type User struct{
 func main(){
 
 	var usr User
-	usr.Username = "ihsan@orori.com"
+	usr.Username = "ororidev"
 	usr.Password = "123456"
 
-	createuserOropay(usr)
+	//createuserOropay(usr)
 
 	//loginuser(usr)
 
 	//generateCustomerSign()
+	
+	//createWarisuser(usr)
+	
+	generateCustomerSign()
 
 }
 
@@ -85,9 +89,9 @@ func createuserOropay(usr User){
 }
 
 func generateCustomerSign(){
-	appId := "TOKOPEDIA"
-	timeStamp := "2017-12-01 00:00:00"
-	SecretKey := "5affc2f9494cd32b0da015dc3ddccc0ba62a9486"
+	appId := "e2paydev"
+	timeStamp := "2019-11-12 00:00:00"
+	SecretKey := "cb5372e466ee4c8d5e99e36835599fa9d8a18f44"
 	sign := security.ShaOneEncrypt(security.Md5Encrypt(appId + timeStamp + SecretKey))
 
 	fmt.Println("---- Generate Customer Signature ----")
@@ -101,4 +105,14 @@ func loginuser(usr User){
 
 	fmt.Println("-------LOGIN USER--------")
 	fmt.Println(usr.Token)
+}
+
+func createWarisuser(usr User){
+	
+	salt := security.ShaOneEncrypt(helper.GetNowTime().String() + helper.StringRandomWithCharset(32, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"))
+	password := security.ShaOneEncrypt(security.Md5Encrypt(usr.Password + salt))
+	
+	fmt.Println("SALT",salt)
+	fmt.Println("PASSWORD",password)
+	
 }
